@@ -1,0 +1,2675 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система управления строительными проектами</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Верхняя панель навигации */
+        .top-navbar {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .navbar-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .global-search-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+            max-width: 1200px;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filters-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Нижняя панель */
+        .bottom-navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .project-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .project-select {
+            padding: 10px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            min-width: 250px;
+            font-weight: 500;
+        }
+
+        .project-meta {
+            color: #6c757d;
+            font-size: 12px;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Дашборд */
+        .dashboard {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* Рабочая область */
+        .main-workspace {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+            min-height: 600px;
+        }
+
+        /* Боковая панель */
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tree-project {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .tree-project-header {
+            padding: 15px;
+            background: #e9ecef;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .tree-project-header:hover {
+            background: #dee2e6;
+        }
+
+        .tree-project.active .tree-project-header {
+            background: #667eea;
+            color: white;
+        }
+
+        .tree-project-name {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tree-blocks {
+            display: none;
+            padding: 10px;
+        }
+
+        .tree-project.active .tree-blocks {
+            display: block;
+        }
+
+        .tree-block {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .tree-block-header {
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .tree-block-header:hover {
+            background: #f8f9fa;
+        }
+
+        .tree-block.active .tree-block-header {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .tree-floors {
+            display: none;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+
+        .tree-block.active .tree-floors {
+            display: block;
+        }
+
+        .tree-floor {
+            padding: 8px 12px;
+            margin: 3px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tree-floor:hover {
+            background: #e3f2fd;
+        }
+
+        .tree-floor.selected {
+            background: #1976d2;
+            color: white;
+        }
+
+        /* Область контента */
+        .content-area {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .content-title {
+            font-size: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Сетка работ */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 15px;
+        }
+
+        .work-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            border-left: 4px solid #dee2e6;
+        }
+
+        .work-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Технологические цвета для работ */
+        .work-card.tech-order-1 { border-left-color: #e53e3e; }
+        .work-card.tech-order-2 { border-left-color: #fd7900; }
+        .work-card.tech-order-3 { border-left-color: #fbb917; }
+        .work-card.tech-order-4 { border-left-color: #38a169; }
+        .work-card.tech-order-5 { border-left-color: #3182ce; }
+        .work-card.tech-order-6 { border-left-color: #805ad5; }
+        .work-card.tech-order-7 { border-left-color: #9c88ff; }
+        .work-card.tech-order-8 { border-left-color: #48bb78; }
+        .work-card.tech-order-9 { border-left-color: #ed8936; }
+        .work-card.tech-order-10 { border-left-color: #38b2ac; }
+        .work-card.tech-order-11 { border-left-color: #667eea; }
+        .work-card.tech-order-12 { border-left-color: #e53e3e; }
+        .work-card.tech-order-13 { border-left-color: #718096; }
+        .work-card.tech-order-14 { border-left-color: #4a5568; }
+        .work-card.tech-order-15 { border-left-color: #2d3748; }
+        .work-card.tech-order-16 { border-left-color: #1a202c; }
+        .work-card.tech-order-17 { border-left-color: #e53e3e; }
+        .work-card.tech-order-18 { border-left-color: #718096; }
+        .work-card.tech-order-19 { border-left-color: #fd7900; }
+        .work-card.tech-order-20 { border-left-color: #38a169; }
+
+        .work-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .work-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.3;
+        }
+
+        .work-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .work-details {
+            margin-bottom: 15px;
+        }
+
+        .work-detail {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .work-detail-label {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .work-detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .tech-order-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+            margin-left: 8px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            margin-left: 5px;
+            opacity: 0.8;
+        }
+
+        .progress-section {
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            margin: 8px 0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.4s ease;
+            border-radius: 12px;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+
+        /* Статусы */
+        .status-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .status-btn {
+            padding: 6px 8px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .status-not-started {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+
+        .status-not-started.active {
+            background: #6c757d;
+            color: white;
+        }
+
+        .status-in-progress {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status-in-progress.active {
+            background: #856404;
+            color: white;
+        }
+
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .status-completed.active {
+            background: #0c5460;
+            color: white;
+        }
+
+        .status-overdue {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+        }
+
+        .status-overdue.active {
+            background: #721c24;
+            color: white;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* Пустое состояние */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .empty-state p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Конструктор блоков */
+        .block-constructor {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .block-header {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .floor-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .floor-range label {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .floor-range input {
+            width: 80px;
+            padding: 5px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+
+        /* Фильтры по категориям */
+        .category-filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .category-filter {
+            padding: 6px 12px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .category-filter:hover {
+            border-color: #667eea;
+        }
+
+        .category-filter.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .navbar-row {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .main-workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: 2;
+                max-height: none;
+            }
+
+            .content-area {
+                order: 1;
+                max-height: none;
+            }
+
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: #28a745;
+        }
+
+        .notification.error {
+            background: #dc3545;
+        }
+
+        .notification.warning {
+            background: #ffc107;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Верхняя панель навигации -->
+    <div class="top-navbar">
+        <div class="navbar-row">
+            <div class="brand">
+                🏗️ Система управления строительными проектами
+            </div>
+            <div class="top-actions">
+                <button class="btn btn-success" onclick="addNewWork()">➕ Добавить работу</button>
+                <button class="btn btn-primary" onclick="addNewProject()">🏗️ Новый проект</button>
+                <button class="btn btn-warning" onclick="exportData()">📥 Экспорт</button>
+            </div>
+        </div>
+
+        <div class="navbar-row">
+            <div class="global-search-container">
+                <input type="text" class="search-input" id="globalSearchInput" placeholder="🔍 Поиск по работам, объектам, этажам, исполнителям...">
+                
+                <div class="filters-group">
+                    <button class="filter-btn active" id="allWorksFilter" onclick="setGlobalFilter('all')">
+                        📋 Все работы
+                    </button>
+                    <button class="filter-btn" id="completedFilter" onclick="setGlobalFilter('completed')">
+                        ✅ Выполненные
+                    </button>
+                    <button class="filter-btn" id="notCompletedFilter" onclick="setGlobalFilter('not-completed')">
+                        ⏳ Невыполненные
+                    </button>
+                    <button class="filter-btn" id="todayFilter" onclick="setGlobalFilter('today')">
+                        📅 Сегодня
+                    </button>
+                    <button class="filter-btn" id="overdueFilter" onclick="setGlobalFilter('overdue')">
+                        🚨 Просрочено
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Фильтры по категориям работ -->
+        <div class="navbar-row">
+            <div class="category-filters" id="categoryFilters">
+                <button class="category-filter active" onclick="setCategoryFilter('all')">Все категории</button>
+                <button class="category-filter" onclick="setCategoryFilter('Черновые работы')">Черновые</button>
+                <button class="category-filter" onclick="setCategoryFilter('Отделочные работы')">Отделочные</button>
+                <button class="category-filter" onclick="setCategoryFilter('Потолки')">Потолки</button>
+                <button class="category-filter" onclick="setCategoryFilter('Конструкции')">Конструкции</button>
+                <button class="category-filter" onclick="setCategoryFilter('Завершающие работы')">Завершающие</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Нижняя панель -->
+    <div class="bottom-navbar">
+        <div class="project-info">
+            <select class="project-select" id="activeProjectSelect" onchange="changeActiveProject()">
+                <option value="all">🌐 Все проекты</option>
+            </select>
+            <div class="project-meta" id="projectMeta">
+                Выберите проект для детального просмотра
+            </div>
+        </div>
+        
+        <div>
+            <button class="btn btn-primary" onclick="openProjectManager()">⚙️ Управление проектами</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Дашборд -->
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <span id="dashboardIcon">📊</span>
+                    <span id="dashboardTitle">Общий дашборд всех проектов</span>
+                </div>
+                <div class="dashboard-actions">
+                    <select class="form-control" id="sortBySelect" onchange="applySorting()" style="max-width: 200px;">
+                        <option value="default">📋 По умолчанию</option>
+                        <option value="technology">🔧 По технологии</option>
+                        <option value="progress">📊 По прогрессу</option>
+                        <option value="date">📅 По датам</option>
+                        <option value="status">🏷️ По статусу</option>
+                        <option value="floor">🏢 По этажам</option>
+                        <option value="category">📁 По категориям</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalWorks">0</div>
+                    <div class="stat-label">Всего работ</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="visibleWorks">0</div>
+                    <div class="stat-label">Показано работ</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedWorks">0</div>
+                    <div class="stat-label">Завершено</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="inProgressWorks">0</div>
+                    <div class="stat-label">В процессе</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="overdueWorks">0</div>
+                    <div class="stat-label">Просрочено</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgProgress">0%</div>
+                    <div class="stat-label">Средний прогресс</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основная рабочая область -->
+        <div class="main-workspace">
+            <!-- Боковая панель навигации -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        🗂️ Структура проектов
+                    </div>
+                    <div id="projectTree">
+                        <!-- Дерево проектов будет добавлено динамически -->
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        🔧 Быстрые действия
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="btn btn-success" onclick="addNewWork()">➕ Добавить работу</button>
+                        <button class="btn btn-primary" onclick="addNewProject()">🏗️ Новый проект</button>
+                        <button class="btn btn-warning" onclick="exportData()">📥 Экспорт данных</button>
+                        <button class="btn btn-info" onclick="generateReport()">📊 Создать отчет</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Область контента -->
+            <div class="content-area">
+                <div class="content-header">
+                    <div class="content-title" id="contentTitle">
+                        📋 Выберите проект для просмотра работ
+                    </div>
+                    <div class="content-actions">
+                        <button class="btn btn-success" onclick="addNewWork()">➕ Добавить работу</button>
+                    </div>
+                </div>
+                
+                <div id="worksContainer">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏗️</div>
+                        <h3>Добро пожаловать в систему управления строительными проектами</h3>
+                        <p>Создайте новый проект или выберите существующий для начала работы</p>
+                        <button class="btn btn-primary" onclick="addNewProject()">🏗️ Создать первый проект</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования работы -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Редактировать работу</h2>
+                <span class="close" onclick="closeModal('editModal')">&times;</span>
+            </div>
+            
+            <form id="workForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Проект</label>
+                        <select class="form-control" id="editProject" required onchange="updateProjectFields()"></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Блок</label>
+                        <select class="form-control" id="editBlock" required onchange="updateFloorOptions()"></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Этаж</label>
+                        <select class="form-control" id="editFloor" required></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Объект</label>
+                        <select class="form-control" id="editObject" required></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Категория работ</label>
+                        <select class="form-control" id="editCategory" onchange="updateWorkTypeOptions()">
+                            <option value="">Все категории</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Вид работы</label>
+                        <select class="form-control" id="editWorkType" required></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Исполнитель</label>
+                        <input type="text" class="form-control" id="editExecutor" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Дата начала</label>
+                        <input type="date" class="form-control" id="editStartDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Дата окончания</label>
+                        <input type="date" class="form-control" id="editEndDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Статус</label>
+                        <select class="form-control" id="editStatus" required>
+                            <option value="not-started">Не начато</option>
+                            <option value="in-progress">В процессе</option>
+                            <option value="completed">Завершено</option>
+                            <option value="overdue">Просрочено</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Приоритет</label>
+                        <select class="form-control" id="editPriority">
+                            <option value="low">Низкий</option>
+                            <option value="medium">Средний</option>
+                            <option value="high">Высокий</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">Прогресс: <span id="progressValue">0</span>%</label>
+                        <input type="range" class="form-control" id="editProgress" min="0" max="100" value="0" style="height: 10px;">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Примечания</label>
+                        <textarea class="form-control" id="editNotes" rows="3"></textarea>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('editModal')">Отмена</button>
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно создания/редактирования проекта -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="projectModalTitle">Создать новый проект</h2>
+                <span class="close" onclick="closeModal('projectModal')">&times;</span>
+            </div>
+            
+            <form id="projectForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Код проекта *</label>
+                        <input type="text" class="form-control" id="projectCode" placeholder="например: gulkevichi-1" required>
+                        <small style="color: #6c757d;">Уникальный код для идентификации проекта</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Иконка проекта</label>
+                        <select class="form-control" id="projectIcon">
+                            <option value="🏢">🏢 Офисное здание</option>
+                            <option value="🏗️">🏗️ Строительство</option>
+                            <option value="🏭">🏭 Промышленный объект</option>
+                            <option value="🏠">🏠 Жилой дом</option>
+                            <option value="🏫">🏫 Общественное здание</option>
+                            <option value="🏥">🏥 Медицинское учреждение</option>
+                            <option value="🏨">🏨 Гостиница</option>
+                            <option value="🏪">🏪 Торговое здание</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">Название проекта *</label>
+                        <input type="text" class="form-control" id="projectName" placeholder="например: ЖК Гулькевичи" required>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">Описание проекта</label>
+                        <textarea class="form-control" id="projectDescription" rows="3" placeholder="Краткое описание проекта, его особенности и цели"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Заказчик</label>
+                        <input type="text" class="form-control" id="projectClient" placeholder="Название организации заказчика">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Подрядчик</label>
+                        <input type="text" class="form-control" id="projectContractor" placeholder="Название организации подрядчика">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Адрес объекта</label>
+                        <input type="text" class="form-control" id="projectAddress" placeholder="Полный адрес строительного объекта">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Дата начала проекта</label>
+                        <input type="date" class="form-control" id="projectStartDate">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Дата окончания проекта</label>
+                        <input type="date" class="form-control" id="projectEndDate">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Бюджет проекта (руб.)</label>
+                        <input type="number" class="form-control" id="projectBudget" placeholder="0">
+                    </div>
+                </div>
+                
+                <h3 style="margin: 20px 0 15px 0;">🏢 Конструктор блоков</h3>
+                
+                <div class="form-group full-width">
+                    <label class="form-label">Блоки проекта</label>
+                    <div id="blocksContainer">
+                        <!-- Блоки будут добавлены динамически -->
+                    </div>
+                    <button type="button" class="btn btn-success btn-small" onclick="addBlock()">➕ Добавить блок</button>
+                    <small style="color: #6c757d; display: block; margin-top: 5px;">Настройте блоки и этажность для каждого блока отдельно</small>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label class="form-label">Объекты (помещения)</label>
+                    <textarea class="form-control" id="projectObjects" rows="3" placeholder="Квартиры, МОП, Лифт.холл, Лест. м., Электрощитовая, ВНС, Коммерция"></textarea>
+                    <small style="color: #6c757d;">Типы помещений/объектов через запятую</small>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('projectModal')">Отмена</button>
+                    <button type="submit" class="btn btn-success">Сохранить проект</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно управления проектами -->
+    <div id="projectManagerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">⚙️ Управление проектами</h2>
+                <span class="close" onclick="closeModal('projectManagerModal')">&times;</span>
+            </div>
+            
+            <div style="display: grid; gap: 15px; max-width: 600px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn btn-success" onclick="addNewProject()">➕ Создать проект</button>
+                    <button class="btn btn-warning" onclick="exportData()">📥 Экспорт данных</button>
+                    <button class="btn btn-info" onclick="generateReport()">📊 Создать отчет</button>
+                </div>
+                
+                <div id="projectsList">
+                    <!-- Список проектов будет добавлен динамически -->
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="closeModal('projectManagerModal')">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === ОБЪЕДИНЕННАЯ БАЗА ДАННЫХ ИЗ ВСЕХ ПРОЕКТОВ ===
+        const workTypesDatabase = [
+            { name: "Штукатурка", order: 1, color: "#e53e3e", category: "Черновые работы" },
+            { name: "Стяжка", order: 2, color: "#fd7900", category: "Черновые работы" },
+            { name: "Утеплитель", order: 3, color: "#fbb917", category: "Черновые работы" },
+            { name: "Шпаклёвка", order: 4, color: "#38a169", category: "Отделочные работы" },
+            { name: "Шпатлёвка", order: 4, color: "#38a169", category: "Отделочные работы" },
+            { name: "Плитка", order: 5, color: "#3182ce", category: "Отделочные работы" },
+            { name: "Сапожок", order: 6, color: "#805ad5", category: "Отделочные работы" },
+            { name: "ГКЛ", order: 7, color: "#9c88ff", category: "Конструкции" },
+            { name: "Армстронг", order: 8, color: "#48bb78", category: "Потолки" },
+            { name: "Грильято", order: 9, color: "#ed8936", category: "Потолки" },
+            { name: "Кварц винил", order: 10, color: "#38b2ac", category: "Напольные покрытия" },
+            { name: "Шкурка", order: 11, color: "#667eea", category: "Отделочные работы" },
+            { name: "Покраска", order: 12, color: "#e53e3e", category: "Отделочные работы" },
+            { name: "Покраска стен", order: 13, color: "#718096", category: "Отделочные работы" },
+            { name: "Сапожок (после дверников)", order: 14, color: "#4a5568", category: "Отделочные работы" },
+            { name: "Заделка штроб под радиатором", order: 15, color: "#2d3748", category: "Специальные работы" },
+            { name: "Дверные откосы внутри квартиры", order: 16, color: "#1a202c", category: "Специальные работы" },
+            { name: "Монтаж плитки на подоконники", order: 17, color: "#e53e3e", category: "Специальные работы" },
+            { name: "Монтаж плитки на лифтовые порталы", order: 18, color: "#718096", category: "Специальные работы" },
+            { name: "Монтаж табличек", order: 19, color: "#fd7900", category: "Завершающие работы" },
+            { name: "Уборка", order: 20, color: "#38a169", category: "Завершающие работы" }
+        ];
+
+        const objectsDatabase = [
+            "ВНС", "Квартиры", "Коммерция", "Лест. м.", "Лифт.холл", "МОП", "Электрощитовая"
+        ];
+
+        const executorsDatabase = [
+            "СМР Майкоп", "СМР Гулькевичи", "СМР Кропоткин", "Бригада №1", "Бригада №2", 
+            "Электрики", "Сантехники", "Отделочники", "Универсалы", "Подрядчик А", "Подрядчик Б"
+        ];
+
+        // === ДЕМО ПРОЕКТЫ ===
+        let projectsStructure = {
+            maikop: {
+                code: "maikop",
+                icon: "🏗️",
+                name: "ЖК Майкоп литер 3.2",
+                description: "Современный жилой комплекс с коммерческими помещениями",
+                client: "Группа компаний Стройальянс",
+                contractor: "СМР Майкоп",
+                address: "г. Майкоп, пр. Ленина, 234",
+                startDate: "2024-05-31",
+                endDate: "2024-08-10",
+                budget: 1200000000,
+                blocks: {
+                    "М-1": { floors: ["1", "2", "3", "4", "5", "6", "7", "8", "9"] },
+                    "М-2": { floors: ["1", "2", "3", "4", "5", "6", "7", "8", "9"] }
+                },
+                objects: ["Коммерция", "Лифт.холл", "Квартиры", "МОП", "лест. м."]
+            },
+            gulkevichi: {
+                code: "gulkevichi", 
+                icon: "🏢",
+                name: "ЖК Гулькевичи",
+                description: "Жилой комплекс в г. Гулькевичи. 4 блока с техническими помещениями",
+                client: "ООО Строй-Инвест",
+                contractor: "СМР Гулькевичи",
+                address: "г. Гулькевичи, ул. Центральная, 15",
+                startDate: "2024-06-27",
+                endDate: "2024-08-31", 
+                budget: 850000000,
+                blocks: {
+                    "Г-1": { floors: ["Тех. Подполье БС4", "Тех. Подполье БС2", "1", "2", "3", "4"] },
+                    "Г-2": { floors: ["1", "2", "3", "4"] },
+                    "Г-3": { floors: ["1", "2", "3", "4"] },
+                    "Г-4": { floors: ["1", "2", "3", "4"] }
+                },
+                objects: ["Электрощитовая", "ВНС", "Квартиры", "МОП", "Лифт.холл", "Лест. м.", "Коммерция"]
+            },
+            kropotkin: {
+                code: "kropotkin",
+                icon: "🏭", 
+                name: "Кропоткин промышленный комплекс",
+                description: "Промышленный объект с производственными и административными помещениями",
+                client: "ПАО Кропоткинский завод",
+                contractor: "СМР Кропоткин",
+                address: "г. Кропоткин, ул. Промышленная, 88",
+                startDate: "2024-06-22",
+                endDate: "2024-08-31",
+                budget: 450000000,
+                blocks: {
+                    "К-2": { floors: ["Тех. Подполье", "1", "2", "3", "4", "5", "6", "7", "8", "9"] }
+                },
+                objects: ["Электрощитовая", "ВНС", "Квартиры", "МОП", "Лифт.холл", "Лест. м."]
+            }
+        };
+
+        // === ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===
+        let works = [];
+        let activeProject = 'all';
+        let selectedProject = null;
+        let selectedBlock = null;
+        let selectedFloor = null;
+        let editingWorkId = null;
+        let editingProjectId = null;
+        let globalFilter = 'all';
+        let categoryFilter = 'all';
+        let currentSort = 'default';
+
+        // === ИНИЦИАЛИЗАЦИЯ ===
+        document.addEventListener('DOMContentLoaded', function() {
+            generateDemoWorks();
+            updateProjectSelect();
+            renderProjectTree();
+            updateDashboard();
+            setupEventListeners();
+            applyGlobalFilter();
+        });
+
+        // === ГЕНЕРАЦИЯ ДЕМО РАБОТ ===
+        function generateDemoWorks() {
+            works = [];
+            let workId = 1;
+
+            Object.keys(projectsStructure).forEach(projectKey => {
+                const project = projectsStructure[projectKey];
+                
+                Object.keys(project.blocks).forEach(blockKey => {
+                    const floors = project.blocks[blockKey].floors;
+                    
+                    floors.forEach(floor => {
+                        project.objects.forEach(object => {
+                            // Создаем работы выборочно для демонстрации
+                            workTypesDatabase.forEach((workType, index) => {
+                                if (Math.random() > 0.6) { // 40% вероятность создания работы
+                                    const startDate = new Date();
+                                    startDate.setDate(startDate.getDate() + Math.random() * 60 - 30);
+                                    
+                                    const endDate = new Date(startDate);
+                                    endDate.setDate(endDate.getDate() + Math.random() * 14 + 3);
+                                    
+                                    const progress = Math.floor(Math.random() * 101);
+                                    let status = getRandomStatus();
+                                    
+                                    if (progress === 0) status = 'not-started';
+                                    else if (progress === 100) status = 'completed';
+                                    else if (endDate < new Date()) status = 'overdue';
+                                    else status = 'in-progress';
+
+                                    works.push({
+                                        id: workId++,
+                                        project: projectKey,
+                                        block: blockKey,
+                                        floor: floor,
+                                        object: object,
+                                        workType: workType.name,
+                                        executor: executorsDatabase[Math.floor(Math.random() * executorsDatabase.length)],
+                                        startDate: startDate.toISOString().split('T')[0],
+                                        endDate: endDate.toISOString().split('T')[0],
+                                        progress: progress,
+                                        status: status,
+                                        priority: getRandomPriority(),
+                                        notes: '',
+                                        techOrder: workType.order,
+                                        category: workType.category,
+                                        stage: Math.floor(Math.random() * 5) + 1
+                                    });
+                                }
+                            });
+                        });
+                    });
+                });
+            });
+
+            console.log('Создано ' + works.length + ' демо работ для всех проектов');
+        }
+
+        function getRandomStatus() {
+            const statuses = ['not-started', 'in-progress', 'completed', 'overdue'];
+            return statuses[Math.floor(Math.random() * statuses.length)];
+        }
+
+        function getRandomPriority() {
+            const priorities = ['low', 'medium', 'high'];
+            return priorities[Math.floor(Math.random() * priorities.length)];
+        }
+
+        // === НАСТРОЙКА ОБРАБОТЧИКОВ СОБЫТИЙ ===
+        function setupEventListeners() {
+            document.getElementById('globalSearchInput').addEventListener('input', debounce(applyGlobalFilter, 300));
+            
+            document.getElementById('editProgress').addEventListener('input', function(e) {
+                document.getElementById('progressValue').textContent = e.target.value;
+            });
+
+            document.getElementById('workForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveWork();
+            });
+
+            document.getElementById('projectForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveProject();
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.classList.remove('active');
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    document.querySelectorAll('.modal.active').forEach(modal => {
+                        modal.classList.remove('active');
+                    });
+                }
+            });
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // === ФИЛЬТРАЦИЯ И ПОИСК ===
+        function setGlobalFilter(filterType) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            
+            globalFilter = filterType;
+            
+            const activeBtn = document.getElementById({
+                'all': 'allWorksFilter',
+                'completed': 'completedFilter',
+                'not-completed': 'notCompletedFilter',
+                'today': 'todayFilter',
+                'overdue': 'overdueFilter'
+            }[filterType]);
+            
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+            
+            applyGlobalFilter();
+        }
+
+        function setCategoryFilter(category) {
+            document.querySelectorAll('.category-filter').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            categoryFilter = category;
+            applyGlobalFilter();
+        }
+
+        function applyGlobalFilter() {
+            const searchTerm = document.getElementById('globalSearchInput').value.toLowerCase();
+            let filteredWorks = [...works];
+
+            // Фильтр по активному проекту
+            if (activeProject !== 'all') {
+                filteredWorks = filteredWorks.filter(w => w.project === activeProject);
+            }
+
+            // Применяем глобальные фильтры
+            switch (globalFilter) {
+                case 'completed':
+                    filteredWorks = filteredWorks.filter(w => w.status === 'completed');
+                    break;
+                case 'not-completed':
+                    filteredWorks = filteredWorks.filter(w => w.status !== 'completed');
+                    break;
+                case 'today':
+                    const today = new Date().toISOString().split('T')[0];
+                    filteredWorks = filteredWorks.filter(w => 
+                        w.startDate <= today && w.endDate >= today
+                    );
+                    break;
+                case 'overdue':
+                    filteredWorks = filteredWorks.filter(w => w.status === 'overdue');
+                    break;
+            }
+
+            // Фильтр по категориям
+            if (categoryFilter !== 'all') {
+                filteredWorks = filteredWorks.filter(w => w.category === categoryFilter);
+            }
+
+            // Применяем текстовый поиск
+            if (searchTerm) {
+                filteredWorks = filteredWorks.filter(w => 
+                    w.workType.toLowerCase().includes(searchTerm) ||
+                    w.object.toLowerCase().includes(searchTerm) ||
+                    w.executor.toLowerCase().includes(searchTerm) ||
+                    w.block.toLowerCase().includes(searchTerm) ||
+                    w.floor.toLowerCase().includes(searchTerm) ||
+                    (w.notes && w.notes.toLowerCase().includes(searchTerm)) ||
+                    (projectsStructure[w.project] && projectsStructure[w.project].name.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            // Дополнительная фильтрация по выбранным элементам
+            if (selectedProject && selectedBlock && selectedFloor) {
+                filteredWorks = filteredWorks.filter(w => 
+                    w.project === selectedProject && 
+                    w.block === selectedBlock && 
+                    w.floor === selectedFloor
+                );
+            } else if (selectedProject && selectedBlock) {
+                filteredWorks = filteredWorks.filter(w => 
+                    w.project === selectedProject && 
+                    w.block === selectedBlock
+                );
+            } else if (selectedProject) {
+                filteredWorks = filteredWorks.filter(w => w.project === selectedProject);
+            }
+
+            renderWorks(filteredWorks);
+            updateContentTitle(filteredWorks.length);
+            updateVisibleWorksCount(filteredWorks.length);
+        }
+
+        // Продолжение следует...
+        // === УПРАВЛЕНИЕ ПРОЕКТАМИ ===
+        function changeActiveProject() {
+            activeProject = document.getElementById('activeProjectSelect').value;
+            
+            selectedProject = null;
+            selectedBlock = null;
+            selectedFloor = null;
+            
+            updateDashboard();
+            updateProjectMeta();
+            renderProjectTree();
+            applyGlobalFilter();
+        }
+
+        function updateProjectMeta() {
+            const metaElement = document.getElementById('projectMeta');
+            
+            if (activeProject === 'all') {
+                const totalProjects = Object.keys(projectsStructure).length;
+                const totalWorks = works.length;
+                metaElement.textContent = totalProjects + ' проектов, ' + totalWorks + ' работ';
+            } else {
+                const project = projectsStructure[activeProject];
+                const projectWorks = works.filter(w => w.project === activeProject);
+                if (project) {
+                    metaElement.textContent = Object.keys(project.blocks).length + ' блоков, ' + projectWorks.length + ' работ';
+                }
+            }
+        }
+
+        function updateProjectSelect() {
+            const select = document.getElementById('activeProjectSelect');
+            select.innerHTML = '<option value="all">🌐 Все проекты</option>' +
+                Object.keys(projectsStructure).map(projectKey => {
+                    const project = projectsStructure[projectKey];
+                    return '<option value="' + projectKey + '">' + project.icon + ' ' + project.name + '</option>';
+                }).join('');
+        }
+
+        // === РЕНДЕРИНГ ДЕРЕВА ПРОЕКТОВ ===
+        function renderProjectTree() {
+            const container = document.getElementById('projectTree');
+            
+            if (activeProject === 'all') {
+                container.innerHTML = Object.keys(projectsStructure).map(projectKey => {
+                    const project = projectsStructure[projectKey];
+                    const projectWorks = works.filter(w => w.project === projectKey);
+                    
+                    return '<div class="tree-project ' + (selectedProject === projectKey ? 'active' : '') + '" id="tree-project-' + projectKey + '">' +
+                        '<div class="tree-project-header" onclick="toggleProject(\'' + projectKey + '\')">' +
+                            '<div class="tree-project-name">' +
+                                project.icon + ' ' + project.name +
+                            '</div>' +
+                            '<span>(' + projectWorks.length + ' работ)</span>' +
+                        '</div>' +
+                        '<div class="tree-blocks">' +
+                            Object.keys(project.blocks).map(blockKey => {
+                                const blockWorks = projectWorks.filter(w => w.block === blockKey);
+                                return '<div class="tree-block ' + (selectedBlock === blockKey ? 'active' : '') + '" id="tree-block-' + blockKey + '">' +
+                                    '<div class="tree-block-header" onclick="toggleBlock(\'' + projectKey + '\', \'' + blockKey + '\')">' +
+                                        '<span>🏢 ' + blockKey + '</span>' +
+                                        '<span>(' + blockWorks.length + ')</span>' +
+                                    '</div>' +
+                                    '<div class="tree-floors">' +
+                                        project.blocks[blockKey].floors.map(floor => {
+                                            const floorWorks = blockWorks.filter(w => w.floor === floor);
+                                            return '<div class="tree-floor ' + (selectedFloor === floor ? 'selected' : '') + '" onclick="selectFloor(\'' + projectKey + '\', \'' + blockKey + '\', \'' + floor + '\')">' +
+                                                '<span>📋 ' + floor + '</span>' +
+                                                '<span>(' + floorWorks.length + ')</span>' +
+                                            '</div>';
+                                        }).join('') +
+                                    '</div>' +
+                                '</div>';
+                            }).join('') +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+            } else {
+                const project = projectsStructure[activeProject];
+                const projectWorks = works.filter(w => w.project === activeProject);
+                
+                container.innerHTML = '<div class="tree-project active" id="tree-project-' + activeProject + '">' +
+                    '<div class="tree-project-header">' +
+                        '<div class="tree-project-name">' +
+                            project.icon + ' ' + project.name +
+                        '</div>' +
+                        '<span>(' + projectWorks.length + ' работ)</span>' +
+                    '</div>' +
+                    '<div class="tree-blocks">' +
+                        Object.keys(project.blocks).map(blockKey => {
+                            const blockWorks = projectWorks.filter(w => w.block === blockKey);
+                            return '<div class="tree-block ' + (selectedBlock === blockKey ? 'active' : '') + '" id="tree-block-' + blockKey + '">' +
+                                '<div class="tree-block-header" onclick="toggleBlock(\'' + activeProject + '\', \'' + blockKey + '\')">' +
+                                    '<span>🏢 ' + blockKey + '</span>' +
+                                    '<span>(' + blockWorks.length + ')</span>' +
+                                '</div>' +
+                                '<div class="tree-floors">' +
+                                    project.blocks[blockKey].floors.map(floor => {
+                                        const floorWorks = blockWorks.filter(w => w.floor === floor);
+                                        return '<div class="tree-floor ' + (selectedFloor === floor ? 'selected' : '') + '" onclick="selectFloor(\'' + activeProject + '\', \'' + blockKey + '\', \'' + floor + '\')">' +
+                                            '<span>📋 ' + floor + '</span>' +
+                                            '<span>(' + floorWorks.length + ')</span>' +
+                                        '</div>';
+                                    }).join('') +
+                                '</div>' +
+                            '</div>';
+                        }).join('') +
+                    '</div>' +
+                '</div>';
+            }
+        }
+
+        function toggleProject(projectKey) {
+            selectedProject = selectedProject === projectKey ? null : projectKey;
+            selectedBlock = null;
+            selectedFloor = null;
+            renderProjectTree();
+            applyGlobalFilter();
+        }
+
+        function toggleBlock(projectKey, blockKey) {
+            selectedProject = projectKey;
+            selectedBlock = selectedBlock === blockKey ? null : blockKey;
+            selectedFloor = null;
+            renderProjectTree();
+            applyGlobalFilter();
+        }
+
+        function selectFloor(projectKey, blockKey, floor) {
+            selectedProject = projectKey;
+            selectedBlock = blockKey;
+            selectedFloor = floor;
+            renderProjectTree();
+            applyGlobalFilter();
+        }
+
+        // === РЕНДЕРИНГ РАБОТ ===
+        function renderWorks(worksToRender) {
+            const container = document.getElementById('worksContainer');
+            
+            if (worksToRender.length === 0) {
+                const emptyMessage = getEmptyStateMessage();
+                container.innerHTML = '<div class="empty-state">' +
+                    '<div class="empty-state-icon">' + emptyMessage.icon + '</div>' +
+                    '<h3>' + emptyMessage.title + '</h3>' +
+                    '<p>' + emptyMessage.description + '</p>' +
+                    '<button class="btn btn-success" onclick="addNewWork()">➕ Добавить работу</button>' +
+                '</div>';
+                return;
+            }
+
+            const sortedWorks = applySortingToWorks(worksToRender);
+
+            container.innerHTML = '<div class="works-grid">' +
+                sortedWorks.map(work => {
+                    const techOrderClass = 'tech-order-' + Math.min(work.techOrder, 20);
+                    const workTypeInfo = workTypesDatabase.find(wt => wt.name === work.workType);
+                    const techOrderColor = workTypeInfo ? workTypeInfo.color : '#dee2e6';
+                    
+                    return '<div class="work-card ' + techOrderClass + '">' +
+                        '<div class="work-header">' +
+                            '<div class="work-title">' +
+                                work.workType +
+                                '<span class="tech-order-badge" style="background: ' + techOrderColor + '">' +
+                                    '#' + work.techOrder +
+                                '</span>' +
+                                '<span class="category-badge" style="background: ' + getCategoryColor(work.category) + '">' +
+                                    work.category.split(' ')[0] +
+                                '</span>' +
+                            '</div>' +
+                            '<div class="work-actions">' +
+                                '<button class="btn btn-primary btn-small" onclick="editWork(' + work.id + ')" title="Редактировать">✏️</button>' +
+                                '<button class="btn btn-danger btn-small" onclick="deleteWork(' + work.id + ')" title="Удалить">🗑️</button>' +
+                            '</div>' +
+                        '</div>' +
+                        
+                        '<div class="work-details">' +
+                            '<div class="work-detail">' +
+                                '<span class="work-detail-label">Проект:</span>' +
+                                '<span class="work-detail-value">' + (projectsStructure[work.project] ? projectsStructure[work.project].icon + ' ' + projectsStructure[work.project].name : 'Неизвестный проект') + '</span>' +
+                            '</div>' +
+                            '<div class="work-detail">' +
+                                '<span class="work-detail-label">Блок/Этаж:</span>' +
+                                '<span class="work-detail-value">' + work.block + ' - ' + work.floor + '</span>' +
+                            '</div>' +
+                            '<div class="work-detail">' +
+                                '<span class="work-detail-label">Объект:</span>' +
+                                '<span class="work-detail-value">' + work.object + '</span>' +
+                            '</div>' +
+                            '<div class="work-detail">' +
+                                '<span class="work-detail-label">Исполнитель:</span>' +
+                                '<span class="work-detail-value">' + work.executor + '</span>' +
+                            '</div>' +
+                            '<div class="work-detail">' +
+                                '<span class="work-detail-label">Период:</span>' +
+                                '<span class="work-detail-value">' + formatDate(work.startDate) + ' - ' + formatDate(work.endDate) + '</span>' +
+                            '</div>' +
+                            '<div class="work-detail">' +
+                                '<span class="work-detail-label">Статус:</span>' +
+                                '<span class="work-detail-value">' + getStatusText(work.status) + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                        
+                        '<div class="progress-section">' +
+                            '<div class="progress-bar" onclick="quickEditProgress(' + work.id + ')">' +
+                                '<div class="progress-fill" style="width: ' + work.progress + '%"></div>' +
+                                '<div class="progress-text">' + work.progress + '% выполнено</div>' +
+                            '</div>' +
+                        '</div>' +
+
+                        '<div class="status-controls">' +
+                            '<button class="status-btn status-not-started' + (work.status === 'not-started' ? ' active' : '') + '" onclick="changeWorkStatus(' + work.id + ', \'not-started\')">Не начато</button>' +
+                            '<button class="status-btn status-in-progress' + (work.status === 'in-progress' ? ' active' : '') + '" onclick="changeWorkStatus(' + work.id + ', \'in-progress\')">В процессе</button>' +
+                            '<button class="status-btn status-completed' + (work.status === 'completed' ? ' active' : '') + '" onclick="changeWorkStatus(' + work.id + ', \'completed\')">Завершено</button>' +
+                            '<button class="status-btn status-overdue' + (work.status === 'overdue' ? ' active' : '') + '" onclick="changeWorkStatus(' + work.id + ', \'overdue\')">Просрочено</button>' +
+                        '</div>' +
+                    '</div>';
+                }).join('') +
+            '</div>';
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                'Черновые работы': '#e53e3e',
+                'Отделочные работы': '#38a169',
+                'Потолки': '#3182ce',
+                'Конструкции': '#805ad5',
+                'Напольные покрытия': '#ed8936',
+                'Специальные работы': '#fd7900',
+                'Завершающие работы': '#28a745'
+            };
+            return colors[category] || '#6c757d';
+        }
+
+        // === УПРАВЛЕНИЕ СТАТУСАМИ И ЭТАПАМИ ===
+        function changeWorkStatus(workId, newStatus) {
+            const work = works.find(w => w.id === workId);
+            if (work) {
+                work.status = newStatus;
+                
+                switch (newStatus) {
+                    case 'not-started':
+                        work.progress = 0;
+                        break;
+                    case 'in-progress':
+                        work.progress = work.progress || 25;
+                        break;
+                    case 'completed':
+                        work.progress = 100;
+                        break;
+                    case 'overdue':
+                        break;
+                }
+                
+                applyGlobalFilter();
+                renderProjectTree();
+                updateDashboard();
+            }
+        }
+
+        function quickEditProgress(workId) {
+            const newProgress = prompt('Введите процент выполнения (0-100):');
+            if (newProgress !== null && !isNaN(newProgress) && newProgress >= 0 && newProgress <= 100) {
+                const work = works.find(w => w.id === workId);
+                if (work) {
+                    work.progress = parseInt(newProgress);
+                    
+                    if (work.progress === 0) work.status = 'not-started';
+                    else if (work.progress === 100) work.status = 'completed';
+                    else work.status = 'in-progress';
+                    
+                    applyGlobalFilter();
+                    renderProjectTree();
+                    updateDashboard();
+                    showNotification('Прогресс обновлен', 'success');
+                }
+            }
+        }
+
+        // === СОРТИРОВКА ===
+        function applySortingToWorks(worksArray) {
+            const sortBy = document.getElementById('sortBySelect').value;
+            
+            return [...worksArray].sort((a, b) => {
+                switch (sortBy) {
+                    case 'technology':
+                        return a.techOrder - b.techOrder;
+                    case 'progress':
+                        return b.progress - a.progress;
+                    case 'date':
+                        return new Date(a.startDate) - new Date(b.startDate);
+                    case 'status':
+                        const statusOrder = { 'overdue': 0, 'in-progress': 1, 'not-started': 2, 'completed': 3 };
+                        return statusOrder[a.status] - statusOrder[b.status];
+                    case 'floor':
+                        return a.floor.localeCompare(b.floor);
+                    case 'category':
+                        return a.category.localeCompare(b.category);
+                    default:
+                        return a.id - b.id;
+                }
+            });
+        }
+
+        function applySorting() {
+            applyGlobalFilter();
+        }
+
+        // === РАБОТА С РАБОТАМИ ===
+        function addNewWork() {
+            editingWorkId = null;
+            updateAllSelects();
+            
+            const defaultProject = activeProject !== 'all' ? activeProject : Object.keys(projectsStructure)[0];
+            document.getElementById('editProject').value = defaultProject;
+            updateProjectFields();
+            
+            document.getElementById('editExecutor').value = executorsDatabase[0];
+            document.getElementById('editPriority').value = 'medium';
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('editStartDate').value = today;
+            document.getElementById('editEndDate').value = today;
+            document.getElementById('editProgress').value = 0;
+            document.getElementById('editStatus').value = 'not-started';
+            document.getElementById('progressValue').textContent = '0';
+            document.getElementById('editNotes').value = '';
+            
+            document.getElementById('modalTitle').textContent = 'Добавить работу';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function editWork(workId) {
+            const work = works.find(w => w.id === workId);
+            if (!work) return;
+
+            editingWorkId = workId;
+            updateAllSelects();
+            
+            document.getElementById('editProject').value = work.project;
+            updateProjectFields();
+            document.getElementById('editBlock').value = work.block;
+            updateFloorOptions();
+            document.getElementById('editFloor').value = work.floor;
+            document.getElementById('editObject').value = work.object;
+            document.getElementById('editCategory').value = work.category || '';
+            updateWorkTypeOptions();
+            document.getElementById('editWorkType').value = work.workType;
+            document.getElementById('editExecutor').value = work.executor;
+            document.getElementById('editStartDate').value = work.startDate;
+            document.getElementById('editEndDate').value = work.endDate;
+            document.getElementById('editProgress').value = work.progress;
+            document.getElementById('editStatus').value = work.status;
+            document.getElementById('editPriority').value = work.priority || 'medium';
+            document.getElementById('progressValue').textContent = work.progress;
+            document.getElementById('editNotes').value = work.notes || '';
+            
+            document.getElementById('modalTitle').textContent = 'Редактировать работу';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function deleteWork(workId) {
+            if (confirm('Вы уверены, что хотите удалить эту работу?')) {
+                works = works.filter(w => w.id !== workId);
+                
+                applyGlobalFilter();
+                renderProjectTree();
+                updateDashboard();
+                showNotification('Работа удалена', 'success');
+            }
+        }
+
+        function saveWork() {
+            const workTypeName = document.getElementById('editWorkType').value;
+            const workType = workTypesDatabase.find(wt => wt.name === workTypeName);
+            
+            const formData = {
+                project: document.getElementById('editProject').value,
+                block: document.getElementById('editBlock').value,
+                floor: document.getElementById('editFloor').value,
+                object: document.getElementById('editObject').value,
+                workType: workTypeName,
+                executor: document.getElementById('editExecutor').value,
+                startDate: document.getElementById('editStartDate').value,
+                endDate: document.getElementById('editEndDate').value,
+                progress: parseInt(document.getElementById('editProgress').value),
+                status: document.getElementById('editStatus').value,
+                priority: document.getElementById('editPriority').value,
+                notes: document.getElementById('editNotes').value,
+                techOrder: workType ? workType.order : 1,
+                category: workType ? workType.category : 'Отделочные работы',
+                stage: Math.floor(Math.random() * 5) + 1
+            };
+            
+            if (!formData.project || !formData.block || !formData.floor || !formData.object || !formData.workType || !formData.executor || !formData.startDate || !formData.endDate) {
+                showNotification('Заполните все обязательные поля', 'error');
+                return;
+            }
+            
+            if (new Date(formData.startDate) > new Date(formData.endDate)) {
+                showNotification('Дата начала не может быть позже даты окончания', 'error');
+                return;
+            }
+            
+            if (editingWorkId) {
+                const work = works.find(w => w.id === editingWorkId);
+                if (work) {
+                    Object.assign(work, formData);
+                    showNotification('Работа обновлена', 'success');
+                }
+            } else {
+                const newWork = {
+                    id: Math.max(...works.map(w => w.id), 0) + 1,
+                    ...formData
+                };
+                works.push(newWork);
+                showNotification('Работа добавлена', 'success');
+            }
+            
+            applyGlobalFilter();
+            renderProjectTree();
+            updateDashboard();
+            closeModal('editModal');
+        }
+
+        // === ОБНОВЛЕНИЕ СЕЛЕКТОВ ===
+        function updateAllSelects() {
+            updateProjectSelectInModal();
+            updateCategorySelect();
+            updateWorkTypeOptions();
+        }
+
+        function updateProjectSelectInModal() {
+            const projectSelect = document.getElementById('editProject');
+            projectSelect.innerHTML = Object.keys(projectsStructure).map(projectKey => 
+                '<option value="' + projectKey + '">' + projectsStructure[projectKey].icon + ' ' + projectsStructure[projectKey].name + '</option>'
+            ).join('');
+        }
+
+        function updateCategorySelect() {
+            const categorySelect = document.getElementById('editCategory');
+            const categories = [...new Set(workTypesDatabase.map(wt => wt.category))];
+            categorySelect.innerHTML = '<option value="">Все категории</option>' +
+                categories.map(category => '<option value="' + category + '">' + category + '</option>').join('');
+        }
+
+        function updateProjectFields() {
+            const projectKey = document.getElementById('editProject').value;
+            const project = projectsStructure[projectKey];
+            
+            if (!project) return;
+            
+            const blockSelect = document.getElementById('editBlock');
+            blockSelect.innerHTML = Object.keys(project.blocks).map(blockKey => 
+                '<option value="' + blockKey + '">' + blockKey + '</option>'
+            ).join('');
+            
+            const objectSelect = document.getElementById('editObject');
+            objectSelect.innerHTML = project.objects.map(object => 
+                '<option value="' + object + '">' + object + '</option>'
+            ).join('');
+            
+            updateFloorOptions();
+        }
+
+        function updateFloorOptions() {
+            const projectKey = document.getElementById('editProject').value;
+            const blockKey = document.getElementById('editBlock').value;
+            const floorSelect = document.getElementById('editFloor');
+            
+            if (projectKey && blockKey && projectsStructure[projectKey] && projectsStructure[projectKey].blocks[blockKey]) {
+                const floors = projectsStructure[projectKey].blocks[blockKey].floors;
+                floorSelect.innerHTML = floors.map(floor => 
+                    '<option value="' + floor + '">' + floor + '</option>'
+                ).join('');
+            } else {
+                floorSelect.innerHTML = '<option value="">Выберите блок</option>';
+            }
+        }
+
+        function updateWorkTypeOptions() {
+            const categoryFilter = document.getElementById('editCategory').value;
+            const workTypeSelect = document.getElementById('editWorkType');
+            
+            const filteredWorkTypes = categoryFilter 
+                ? workTypesDatabase.filter(wt => wt.category === categoryFilter)
+                : workTypesDatabase;
+            
+            workTypeSelect.innerHTML = filteredWorkTypes.map(workType => 
+                '<option value="' + workType.name + '">' + workType.name + ' (#' + workType.order + ')</option>'
+            ).join('');
+        }
+
+        // === УПРАВЛЕНИЕ ПРОЕКТАМИ ===
+        function addNewProject() {
+            editingProjectId = null;
+            
+            document.getElementById('projectCode').value = '';
+            document.getElementById('projectIcon').value = '🏢';
+            document.getElementById('projectName').value = '';
+            document.getElementById('projectDescription').value = '';
+            document.getElementById('projectClient').value = '';
+            document.getElementById('projectContractor').value = '';
+            document.getElementById('projectAddress').value = '';
+            document.getElementById('projectStartDate').value = '';
+            document.getElementById('projectEndDate').value = '';
+            document.getElementById('projectBudget').value = '';
+            document.getElementById('projectObjects').value = objectsDatabase.join(', ');
+            
+            // Очищаем и добавляем один блок по умолчанию
+            document.getElementById('blocksContainer').innerHTML = '';
+            addBlock();
+            
+            document.getElementById('projectModalTitle').textContent = 'Создать новый проект';
+            document.getElementById('projectModal').classList.add('active');
+        }
+
+        function addBlock() {
+            const container = document.getElementById('blocksContainer');
+            const blockIndex = container.children.length + 1;
+            
+            const blockDiv = document.createElement('div');
+            blockDiv.className = 'block-constructor';
+            blockDiv.innerHTML = 
+                '<div class="block-header">' +
+                    '<input type="text" class="form-control block-name" placeholder="Название блока (например: БС-' + blockIndex + ')" value="БС-' + blockIndex + '" style="flex: 1; margin-right: 10px;">' +
+                    '<button type="button" class="btn btn-danger btn-small" onclick="removeBlock(this)">🗑️</button>' +
+                '</div>' +
+                '<div class="floor-range">' +
+                    '<label>От этажа:</label>' +
+                    '<input type="text" class="form-control floor-from" placeholder="1" value="1">' +
+                    '<label>До этажа:</label>' +
+                    '<input type="text" class="form-control floor-to" placeholder="9" value="9">' +
+                    '<label>Дополнительные:</label>' +
+                    '<input type="text" class="form-control floor-extra" placeholder="Подвал, Тех.этаж">' +
+                '</div>';
+            container.appendChild(blockDiv);
+        }
+
+        function removeBlock(button) {
+            const blockInputs = document.querySelectorAll('.block-constructor');
+            if (blockInputs.length > 1) {
+                button.closest('.block-constructor').remove();
+            } else {
+                showNotification('Должен остаться хотя бы один блок', 'warning');
+            }
+        }
+
+        function saveProject() {
+            const formData = {
+                code: document.getElementById('projectCode').value.trim(),
+                icon: document.getElementById('projectIcon').value,
+                name: document.getElementById('projectName').value.trim(),
+                description: document.getElementById('projectDescription').value.trim(),
+                client: document.getElementById('projectClient').value.trim(),
+                contractor: document.getElementById('projectContractor').value.trim(),
+                address: document.getElementById('projectAddress').value.trim(),
+                startDate: document.getElementById('projectStartDate').value,
+                endDate: document.getElementById('projectEndDate').value,
+                budget: parseInt(document.getElementById('projectBudget').value) || 0
+            };
+            
+            if (!formData.code || !formData.name) {
+                showNotification('Заполните обязательные поля (код и название проекта)', 'error');
+                return;
+            }
+            
+            if (!editingProjectId && projectsStructure[formData.code]) {
+                showNotification('Проект с таким кодом уже существует', 'error');
+                return;
+            }
+            
+            // Собираем блоки
+            const blocks = {};
+            const blockConstructors = document.querySelectorAll('.block-constructor');
+            
+            blockConstructors.forEach(blockDiv => {
+                const blockName = blockDiv.querySelector('.block-name').value.trim();
+                const floorFrom = blockDiv.querySelector('.floor-from').value.trim();
+                const floorTo = blockDiv.querySelector('.floor-to').value.trim();
+                const floorExtra = blockDiv.querySelector('.floor-extra').value.trim();
+                
+                if (blockName) {
+                    const floors = [];
+                    
+                    // Добавляем дополнительные этажи
+                    if (floorExtra) {
+                        floorExtra.split(',').forEach(floor => {
+                            const trimmed = floor.trim();
+                            if (trimmed) floors.push(trimmed);
+                        });
+                    }
+                    
+                    // Добавляем основные этажи
+                    if (floorFrom && floorTo) {
+                        const from = parseInt(floorFrom);
+                        const to = parseInt(floorTo);
+                        
+                        if (!isNaN(from) && !isNaN(to) && from <= to) {
+                            for (let i = from; i <= to; i++) {
+                                floors.push(i.toString());
+                            }
+                        }
+                    }
+                    
+                    blocks[blockName] = { floors: floors };
+                }
+            });
+            
+            const objectsText = document.getElementById('projectObjects').value.trim();
+            const objects = objectsText.split(',').map(o => o.trim()).filter(o => o);
+            
+            const projectData = {
+                code: formData.code,
+                icon: formData.icon,
+                name: formData.name,
+                description: formData.description,
+                client: formData.client,
+                contractor: formData.contractor,
+                address: formData.address,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                budget: formData.budget,
+                blocks: blocks,
+                objects: objects
+            };
+            
+            if (editingProjectId) {
+                const oldCode = editingProjectId;
+                
+                if (oldCode !== formData.code) {
+                    works.forEach(work => {
+                        if (work.project === oldCode) {
+                            work.project = formData.code;
+                        }
+                    });
+                    
+                    delete projectsStructure[oldCode];
+                    projectsStructure[formData.code] = projectData;
+                    
+                    if (activeProject === oldCode) {
+                        activeProject = formData.code;
+                        document.getElementById('activeProjectSelect').value = formData.code;
+                    }
+                } else {
+                    projectsStructure[formData.code] = projectData;
+                }
+                
+                showNotification('Проект обновлен', 'success');
+            } else {
+                projectsStructure[formData.code] = projectData;
+                showNotification('Проект создан', 'success');
+            }
+            
+            updateProjectSelect();
+            renderProjectTree();
+            updateDashboard();
+            closeModal('projectModal');
+        }
+
+        function editProject(projectKey) {
+            const project = projectsStructure[projectKey];
+            if (!project) return;
+
+            editingProjectId = projectKey;
+            
+            document.getElementById('projectCode').value = project.code;
+            document.getElementById('projectIcon').value = project.icon;
+            document.getElementById('projectName').value = project.name;
+            document.getElementById('projectDescription').value = project.description || '';
+            document.getElementById('projectClient').value = project.client || '';
+            document.getElementById('projectContractor').value = project.contractor || '';
+            document.getElementById('projectAddress').value = project.address || '';
+            document.getElementById('projectStartDate').value = project.startDate || '';
+            document.getElementById('projectEndDate').value = project.endDate || '';
+            document.getElementById('projectBudget').value = project.budget || '';
+            document.getElementById('projectObjects').value = project.objects.join(', ');
+            
+            // Загружаем блоки
+            document.getElementById('blocksContainer').innerHTML = '';
+            Object.keys(project.blocks).forEach(blockKey => {
+                const blockDiv = document.createElement('div');
+                blockDiv.className = 'block-constructor';
+                
+                const floors = project.blocks[blockKey].floors;
+                const numericFloors = floors.filter(f => !isNaN(parseInt(f))).map(f => parseInt(f)).sort((a,b) => a-b);
+                const extraFloors = floors.filter(f => isNaN(parseInt(f)));
+                
+                blockDiv.innerHTML = 
+                    '<div class="block-header">' +
+                        '<input type="text" class="form-control block-name" value="' + blockKey + '" style="flex: 1; margin-right: 10px;">' +
+                        '<button type="button" class="btn btn-danger btn-small" onclick="removeBlock(this)">🗑️</button>' +
+                    '</div>' +
+                    '<div class="floor-range">' +
+                        '<label>От этажа:</label>' +
+                        '<input type="text" class="form-control floor-from" value="' + (numericFloors.length > 0 ? numericFloors[0] : '1') + '">' +
+                        '<label>До этажа:</label>' +
+                        '<input type="text" class="form-control floor-to" value="' + (numericFloors.length > 0 ? numericFloors[numericFloors.length - 1] : '9') + '">' +
+                        '<label>Дополнительные:</label>' +
+                        '<input type="text" class="form-control floor-extra" value="' + extraFloors.join(', ') + '">' +
+                    '</div>';
+                document.getElementById('blocksContainer').appendChild(blockDiv);
+            });
+            
+            document.getElementById('projectModalTitle').textContent = 'Редактировать проект';
+            document.getElementById('projectModal').classList.add('active');
+        }
+
+        function deleteProject(projectKey) {
+            const project = projectsStructure[projectKey];
+            const projectWorks = works.filter(w => w.project === projectKey);
+            
+            let confirmMessage = 'Вы уверены, что хотите удалить проект "' + project.name + '"?';
+            if (projectWorks.length > 0) {
+                confirmMessage += '\n\nВНИМАНИЕ: В проекте есть ' + projectWorks.length + ' работ. Они также будут удалены!';
+            }
+            
+            if (confirm(confirmMessage)) {
+                works = works.filter(w => w.project !== projectKey);
+                delete projectsStructure[projectKey];
+                
+                if (activeProject === projectKey) {
+                    activeProject = 'all';
+                    document.getElementById('activeProjectSelect').value = 'all';
+                }
+                
+                updateProjectSelect();
+                renderProjectTree();
+                updateDashboard();
+                applyGlobalFilter();
+                
+                showNotification('Проект "' + project.name + '" удален', 'success');
+            }
+        }
+
+        // === СТАТИСТИКА И ДАШБОРД ===
+        function updateDashboard() {
+            const filteredWorks = activeProject === 'all' 
+                ? works 
+                : works.filter(w => w.project === activeProject);
+            
+            const total = filteredWorks.length;
+            const completed = filteredWorks.filter(w => w.status === 'completed').length;
+            const inProgress = filteredWorks.filter(w => w.status === 'in-progress').length;
+            const overdue = filteredWorks.filter(w => w.status === 'overdue').length;
+            const avgProgress = total > 0 
+                ? Math.round(filteredWorks.reduce((sum, w) => sum + w.progress, 0) / total)
+                : 0;
+
+            document.getElementById('totalWorks').textContent = total;
+            document.getElementById('completedWorks').textContent = completed;
+            document.getElementById('inProgressWorks').textContent = inProgress;
+            document.getElementById('overdueWorks').textContent = overdue;
+            document.getElementById('avgProgress').textContent = avgProgress + '%';
+
+            const dashboardTitle = document.getElementById('dashboardTitle');
+            const dashboardIcon = document.getElementById('dashboardIcon');
+            
+            if (activeProject === 'all') {
+                dashboardTitle.textContent = 'Общий дашборд всех проектов';
+                dashboardIcon.textContent = '📊';
+            } else {
+                const project = projectsStructure[activeProject];
+                dashboardTitle.textContent = 'Дашборд проекта ' + project.icon + ' ' + project.name;
+                dashboardIcon.textContent = project.icon;
+            }
+
+            updateProjectMeta();
+        }
+
+        function updateVisibleWorksCount(count) {
+            document.getElementById('visibleWorks').textContent = count;
+        }
+
+        function updateContentTitle(visibleCount) {
+            const titleElement = document.getElementById('contentTitle');
+            
+            if (selectedProject && selectedBlock && selectedFloor) {
+                const projectName = projectsStructure[selectedProject].name;
+                titleElement.innerHTML = '📋 ' + projectName + ' - ' + selectedBlock + ' - ' + selectedFloor + ' (' + visibleCount + ' работ)';
+            } else if (selectedProject && selectedBlock) {
+                const projectName = projectsStructure[selectedProject].name;
+                titleElement.innerHTML = '🏢 ' + projectName + ' - ' + selectedBlock + ' (' + visibleCount + ' работ)';
+            } else if (selectedProject) {
+                const projectName = projectsStructure[selectedProject].name;
+                titleElement.innerHTML = '🏗️ ' + projectName + ' (' + visibleCount + ' работ)';
+            } else if (activeProject !== 'all') {
+                const projectName = projectsStructure[activeProject].name;
+                titleElement.innerHTML = '🏗️ ' + projectName + ' (' + visibleCount + ' работ)';
+            } else {
+                titleElement.innerHTML = '🌐 Все проекты (' + visibleCount + ' работ)';
+            }
+        }
+
+        // === УПРАВЛЕНИЕ ПРОЕКТАМИ ===
+        function openProjectManager() {
+            renderProjectsList();
+            document.getElementById('projectManagerModal').classList.add('active');
+        }
+
+        function renderProjectsList() {
+            const container = document.getElementById('projectsList');
+            
+            container.innerHTML = Object.keys(projectsStructure).map(projectKey => {
+                const project = projectsStructure[projectKey];
+                const projectWorks = works.filter(w => w.project === projectKey);
+                const totalBlocks = Object.keys(project.blocks).length;
+                const totalFloors = Object.values(project.blocks).reduce((sum, block) => sum + block.floors.length, 0);
+                const completedWorks = projectWorks.filter(w => w.status === 'completed').length;
+                const avgProgress = projectWorks.length > 0 
+                    ? Math.round(projectWorks.reduce((sum, w) => sum + w.progress, 0) / projectWorks.length)
+                    : 0;
+
+                return '<div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 12px; padding: 20px; margin-bottom: 15px;">' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">' +
+                        '<div>' +
+                            '<h3>' + project.icon + ' ' + project.name + '</h3>' +
+                            '<p style="color: #6c757d; margin: 5px 0;">' + (project.description || 'Описание не указано') + '</p>' +
+                            '<small style="color: #6c757d;">' + (project.address || 'Адрес не указан') + '</small>' +
+                        '</div>' +
+                        '<div style="display: flex; gap: 8px;">' +
+                            '<button class="btn btn-primary btn-small" onclick="selectProjectFromManager(\'' + projectKey + '\')">👁️ Открыть</button>' +
+                            '<button class="btn btn-warning btn-small" onclick="editProject(\'' + projectKey + '\')">✏️ Редактировать</button>' +
+                            '<button class="btn btn-danger btn-small" onclick="deleteProject(\'' + projectKey + '\')">🗑️ Удалить</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; text-align: center;">' +
+                        '<div style="background: white; padding: 10px; border-radius: 6px;">' +
+                            '<div style="font-size: 1.5em; font-weight: bold; color: #667eea;">' + totalBlocks + '</div>' +
+                            '<div style="font-size: 11px; color: #6c757d;">Блоков</div>' +
+                        '</div>' +
+                        '<div style="background: white; padding: 10px; border-radius: 6px;">' +
+                            '<div style="font-size: 1.5em; font-weight: bold; color: #667eea;">' + totalFloors + '</div>' +
+                            '<div style="font-size: 11px; color: #6c757d;">Этажей</div>' +
+                        '</div>' +
+                        '<div style="background: white; padding: 10px; border-radius: 6px;">' +
+                            '<div style="font-size: 1.5em; font-weight: bold; color: #667eea;">' + projectWorks.length + '</div>' +
+                            '<div style="font-size: 11px; color: #6c757d;">Работ</div>' +
+                        '</div>' +
+                        '<div style="background: white; padding: 10px; border-radius: 6px;">' +
+                            '<div style="font-size: 1.5em; font-weight: bold; color: #667eea;">' + completedWorks + '</div>' +
+                            '<div style="font-size: 11px; color: #6c757d;">Завершено</div>' +
+                        '</div>' +
+                        '<div style="background: white; padding: 10px; border-radius: 6px;">' +
+                            '<div style="font-size: 1.5em; font-weight: bold; color: #667eea;">' + avgProgress + '%</div>' +
+                            '<div style="font-size: 11px; color: #6c757d;">Прогресс</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function selectProjectFromManager(projectKey) {
+            document.getElementById('activeProjectSelect').value = projectKey;
+            activeProject = projectKey;
+            changeActiveProject();
+            closeModal('projectManagerModal');
+        }
+
+        // === ЭКСПОРТ/ИМПОРТ ===
+        function exportData() {
+            const exportFormat = prompt('Выберите формат экспорта:\n1 - CSV (только работы)\n2 - JSON (полные данные)\n\nВведите 1 или 2:');
+            
+            if (exportFormat === '1') {
+                exportToCSV();
+            } else if (exportFormat === '2') {
+                exportToJSON();
+            }
+        }
+
+        function exportToCSV() {
+            const worksToExport = activeProject === 'all' ? works : works.filter(w => w.project === activeProject);
+            
+            if (worksToExport.length === 0) {
+                showNotification('Нет данных для экспорта', 'warning');
+                return;
+            }
+            
+            const headers = [
+                'ID', 'Проект', 'Блок', 'Этаж', 'Объект', 'Категория работ', 'Вид работы', 
+                'Исполнитель', 'Дата начала', 'Дата окончания', 'Прогресс %', 'Статус', 
+                'Приоритет', 'Тех. порядок', 'Примечания'
+            ];
+            
+            const csvData = [
+                headers.join(','),
+                ...worksToExport.map(w => [
+                    w.id,
+                    '"' + (projectsStructure[w.project] ? projectsStructure[w.project].name : 'Неизвестный проект') + '"',
+                    '"' + w.block + '"',
+                    '"' + w.floor + '"',
+                    '"' + w.object + '"',
+                    '"' + (w.category || '') + '"',
+                    '"' + w.workType + '"',
+                    '"' + w.executor + '"',
+                    w.startDate,
+                    w.endDate,
+                    w.progress,
+                    '"' + getStatusText(w.status) + '"',
+                    '"' + getPriorityText(w.priority) + '"',
+                    w.techOrder,
+                    '"' + (w.notes || '') + '"'
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            
+            const projectName = activeProject === 'all' ? 'all_projects' : activeProject;
+            link.download = 'construction_works_' + projectName + '_' + new Date().toISOString().split('T')[0] + '.csv';
+            link.click();
+            
+            showNotification('CSV файл сохранен', 'success');
+        }
+
+        function exportToJSON() {
+            const exportData = {
+                projects: projectsStructure,
+                works: works,
+                exportDate: new Date().toISOString(),
+                version: '2.0',
+                workTypesDatabase: workTypesDatabase,
+                objectsDatabase: objectsDatabase,
+                executorsDatabase: executorsDatabase
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'construction_system_backup_' + new Date().toISOString().split('T')[0] + '.json';
+            link.click();
+            
+            showNotification('Полный экспорт данных сохранен', 'success');
+        }
+
+        function generateReport() {
+            const reportData = {
+                reportTitle: 'Отчет по строительным проектам',
+                generated: new Date().toISOString(),
+                period: {
+                    from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    to: new Date().toISOString().split('T')[0]
+                },
+                summary: {
+                    totalProjects: Object.keys(projectsStructure).length,
+                    totalWorks: works.length,
+                    completedWorks: works.filter(w => w.status === 'completed').length,
+                    inProgressWorks: works.filter(w => w.status === 'in-progress').length,
+                    overdueWorks: works.filter(w => w.status === 'overdue').length,
+                    avgProgress: works.length > 0 
+                        ? Math.round(works.reduce((sum, w) => sum + w.progress, 0) / works.length)
+                        : 0
+                },
+                projectsAnalysis: {},
+                categoriesAnalysis: {},
+                executorsAnalysis: {}
+            };
+
+            // Анализ по проектам
+            Object.keys(projectsStructure).forEach(projectKey => {
+                const project = projectsStructure[projectKey];
+                const projectWorks = works.filter(w => w.project === projectKey);
+                
+                reportData.projectsAnalysis[project.name] = {
+                    totalWorks: projectWorks.length,
+                    completedWorks: projectWorks.filter(w => w.status === 'completed').length,
+                    avgProgress: projectWorks.length > 0 
+                        ? Math.round(projectWorks.reduce((sum, w) => sum + w.progress, 0) / projectWorks.length)
+                        : 0,
+                    blocksCount: Object.keys(project.blocks).length,
+                    floorsCount: Object.values(project.blocks).reduce((sum, block) => sum + block.floors.length, 0)
+                };
+            });
+
+            // Анализ по категориям
+            const categories = [...new Set(workTypesDatabase.map(wt => wt.category))];
+            categories.forEach(category => {
+                const categoryWorks = works.filter(w => w.category === category);
+                reportData.categoriesAnalysis[category] = {
+                    totalWorks: categoryWorks.length,
+                    completedWorks: categoryWorks.filter(w => w.status === 'completed').length,
+                    avgProgress: categoryWorks.length > 0 
+                        ? Math.round(categoryWorks.reduce((sum, w) => sum + w.progress, 0) / categoryWorks.length)
+                        : 0
+                };
+            });
+
+            // Анализ по исполнителям
+            const executors = [...new Set(works.map(w => w.executor))];
+            executors.forEach(executor => {
+                const executorWorks = works.filter(w => w.executor === executor);
+                reportData.executorsAnalysis[executor] = {
+                    totalWorks: executorWorks.length,
+                    completedWorks: executorWorks.filter(w => w.status === 'completed').length,
+                    avgProgress: executorWorks.length > 0 
+                        ? Math.round(executorWorks.reduce((sum, w) => sum + w.progress, 0) / executorWorks.length)
+                        : 0
+                };
+            });
+
+            const reportStr = JSON.stringify(reportData, null, 2);
+            const blob = new Blob([reportStr], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'construction_report_' + new Date().toISOString().split('T')[0] + '.json';
+            link.click();
+            
+            showNotification('Аналитический отчет сгенерирован', 'success');
+        }
+
+        // === МОДАЛЬНЫЕ ОКНА ===
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
+        function getEmptyStateMessage() {
+            if (globalFilter === 'completed') {
+                return {
+                    icon: '✅',
+                    title: 'Нет завершенных работ',
+                    description: 'В выбранной области пока нет завершенных работ'
+                };
+            } else if (globalFilter === 'not-completed') {
+                return {
+                    icon: '⏳',
+                    title: 'Все работы завершены!',
+                    description: 'Все работы в выбранной области выполнены'
+                };
+            } else if (globalFilter === 'overdue') {
+                return {
+                    icon: '🚨',
+                    title: 'Нет просроченных работ',
+                    description: 'Отлично! Все работы выполняются в срок'
+                };
+            } else {
+                return {
+                    icon: '📋',
+                    title: 'Нет работ',
+                    description: 'В выбранной области нет работ или они не соответствуют критериям поиска'
+                };
+            }
+        }
+
+        function getStatusText(status) {
+            const statusTexts = {
+                'not-started': 'Не начато',
+                'in-progress': 'В процессе',
+                'completed': 'Завершено',
+                'overdue': 'Просрочено'
+            };
+            return statusTexts[status] || status;
+        }
+
+        function getPriorityText(priority) {
+            const priorityTexts = {
+                'low': 'Низкий',
+                'medium': 'Средний',
+                'high': 'Высокий'
+            };
+            return priorityTexts[priority] || priority;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Не указано';
+            try {
+                return new Date(dateString).toLocaleDateString('ru-RU');
+            } catch {
+                return dateString;
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = 'notification ' + (type || 'success');
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        // Делаем функции глобально доступными
+        window.addBlock = addBlock;
+        window.removeBlock = removeBlock;
+        window.addNewWork = addNewWork;
+        window.editWork = editWork;
+        window.deleteWork = deleteWork;
+        window.changeWorkStatus = changeWorkStatus;
+        window.quickEditProgress = quickEditProgress;
+        window.addNewProject = addNewProject;
+        window.editProject = editProject;
+        window.deleteProject = deleteProject;
+        window.setGlobalFilter = setGlobalFilter;
+        window.setCategoryFilter = setCategoryFilter;
+        window.changeActiveProject = changeActiveProject;
+        window.toggleProject = toggleProject;
+        window.toggleBlock = toggleBlock;
+        window.selectFloor = selectFloor;
+        window.updateProjectFields = updateProjectFields;
+        window.updateFloorOptions = updateFloorOptions;
+        window.updateWorkTypeOptions = updateWorkTypeOptions;
+        window.applySorting = applySorting;
+        window.closeModal = closeModal;
+        window.openProjectManager = openProjectManager;
+        window.selectProjectFromManager = selectProjectFromManager;
+        window.exportData = exportData;
+        window.generateReport = generateReport;
+    </script>
+</body>
+</html>
