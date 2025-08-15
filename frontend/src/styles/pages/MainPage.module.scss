@@ -1,3 +1,364 @@
-h1 {
-    color: red;
+/* Верхняя панель навигации */
+.topNavbar {
+    background: white;
+    padding: 15px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbarRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.navbarRow:last-child {
+    margin-bottom: 0;
+}
+
+.brand {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.topActions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.globalSearchContainer {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    max-width: 1200px;
+}
+
+.searchInput {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.filtersGroup {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filterBtn {
+    padding: 8px 15px;
+    border: 2px solid #dee2e6;
+    background: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.filterBtn:hover {
+    border-color: #667eea;
+}
+
+.filterBtn:focus {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* Нижняя панель */
+.bottomNavbar {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 20px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.projectInfo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.projectSelect {
+    padding: 10px 15px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+    min-width: 250px;
+    font-weight: 500;
+}
+
+.projectMeta {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+/* Кнопки */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btnPrimary {
+    background: #667eea;
+    color: white;
+}
+
+.btnSuccess {
+    background: #28a745;
+    color: white;
+}
+
+.btnDanger {
+    background: #dc3545;
+    color: white;
+}
+
+.btnWarning {
+    background: #ffc107;
+    color: #333;
+}
+
+.btnInfo {
+    background: #17a2b8;
+    color: white;
+}
+
+.btnSmall {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.categoryFilters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.categoryFilter {
+    padding: 6px 12px;
+    border: 2px solid #dee2e6;
+    background: white;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.categoryFilter:hover {
+    border-color: #667eea;
+}
+
+.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Дашборд */
+.dashboard {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.dashboardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dashboardTitle {
+    font-size: 24px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dashboardActions {
+    display: flex;
+    gap: 10px;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.statCard {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.statCard:hover {
+    transform: translateY(-2px);
+}
+
+.statNumber {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.statLabel {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.formControl {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    max-width: 200px;
+}
+
+.formControl:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Рабочая область */
+.mainWorkspace {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 20px;
+    min-height: 600px;
+}
+
+/* Боковая панель */
+.sidebar {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.sidebarSection {
+    margin-bottom: 25px;
+}
+
+.sidebarTitle {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebarBtn {
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px;
+}
+
+/* Область контента */
+.contentArea {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.contentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.contentTitle {
+    font-size: 20px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contentActions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Пустое состояние */
+.emptyState {
+    text-align: center;
+    padding: 80px 20px;
+    color: #6c757d;
+}
+
+.emptyStateIcon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.emptyState h3 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.emptyState p {
+    margin-bottom: 20px;
+    font-size: 16px;
 }
