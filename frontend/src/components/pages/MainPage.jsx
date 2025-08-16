@@ -4,7 +4,28 @@ import styles from '../../styles/pages/MainPage.module.scss';
 export default function MainPage() {  
     const [activeIndex, setActiveIndex] = useState(0);
     const [activeIndexCategory, setActiveIndexCategory] = useState(0);
+    
+    {/* НЕ ЗАБЫТЬ УБРАТЬ */}
+    {/* -------- */}
+    const [pingButtonText, setPingButtonText] = useState('Проверка Бэка');
 
+    const handlePing = () => {
+        fetch('http://127.0.0.1:5000/api/ping')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Проблема с сетью или сервером!');
+            }
+            return response.text();
+        })
+        .then(data => {
+            setPingButtonText(data);
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            setPingButtonText('Ошибка!');
+        });
+    };
+    {/* -------- */}
     return (
     <section>
         <header>
@@ -12,7 +33,11 @@ export default function MainPage() {
                 <div className={styles.navbarRow}>
                     <h1 className={styles.brand}> 🏗️ Система управления строительными проектами </h1>
                     <div className={styles.topActions}>
-                        <button className={`${styles.btn} ${styles.btnSuccess}`} >➕ Добавить работу</button>
+                        {/* НЕ ЗАБЫТЬ УБРАТЬ */}
+                        {/* -------- */}
+                        <button className={`${styles.btn} ${styles.btnSuccess}`} onClick={handlePing}>{pingButtonText}</button>
+                        {/* -------- */} 
+                        <button className={`${styles.btn} ${styles.btnSuccess}`}>➕ Добавить работу</button> 
                         <button className={`${styles.btn} ${styles.btnPrimary}`} >🏗️ Новый проект</button>
                         <button className={`${styles.btn} ${styles.btnWarning}`}>📥 Экспорт</button>
                     </div>
