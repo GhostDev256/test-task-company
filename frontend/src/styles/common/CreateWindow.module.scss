@@ -1,0 +1,22 @@
+@import '_BaseModal.module';
+
+small {
+    color: #6c757d;
+}
+
+.smallForm {
+    color: #6c757d; 
+    display: block; 
+    margin-top: 5px;
+}
+
+.bottomDiv {
+    display: flex; 
+    gap: 10px; 
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+h3 {
+    margin: '20px 0 15px 0';
+}

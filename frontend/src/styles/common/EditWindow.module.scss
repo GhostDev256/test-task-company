@@ -1,0 +1,15 @@
+@import '_BaseModal.module';
+
+small {
+    color: #6c757d;
+}
+
+.bottomDiv {
+    display: 'flex'; 
+    gap: '10px'; 
+    justify-content: 'flex-end';
+}
+
+.inputForm {
+    height: 10px;
+}
