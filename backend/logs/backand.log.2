@@ -1,0 +1,63 @@
+2025-08-17 22:32:05,617 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 22:37:29,784 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 22:38:13,447 ERROR: Exception on /api/projects [POST] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 104, in create_project
+    block_name = block_data.get('name')
+                 ^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-08-17 22:48:11,506 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 22:54:39,703 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-17 22:54:55,199 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-17 22:54:59,214 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-17 23:05:59,641 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-17 23:08:37,095 ERROR: Exception on /api/projects/סûפלסû [PUT] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 173, in update_project
+    new_block_names = {block_data['name'] for block_data in new_blocks_data}
+                       ~~~~~~~~~~^^^^^^^^
+TypeError: string indices must be integers, not 'str'
+2025-08-18 23:47:31,183 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-18 23:53:20,096 ERROR: Exception on /api/projects/סûפלסû [PUT] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 173, in update_project
+    new_block_names = {block_data['name'] for block_data in new_blocks_data}
+                       ~~~~~~~~~~^^^^^^^^
+TypeError: string indices must be integers, not 'str'
+2025-08-19 10:38:08,215 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]

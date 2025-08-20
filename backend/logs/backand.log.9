@@ -1,0 +1,119 @@
+2025-08-17 19:18:25,359 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 19:29:51,705 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 19:37:33,098 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 19:38:22,038 ERROR: Exception on /api/projects [POST] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 74, in create_project
+    form = ProjectForm(json=data)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 209, in __call__
+    return type.__call__(cls, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_wtf\form.py", line 73, in __init__
+    super().__init__(formdata=formdata, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 281, in __init__
+    super().__init__(self._unbound_fields, meta=meta_obj, prefix=prefix)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 49, in __init__
+    field = meta.bind_field(self, unbound_field, options)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\meta.py", line 28, in bind_field
+    return unbound_field.bind(form=form, **options)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\fields\core.py", line 387, in bind
+    return self.field_class(*self.args, **kw)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\csrf\core.py", line 20, in __init__
+    self.csrf_impl = kw.pop("csrf_impl")
+                     ~~~~~~^^^^^^^^^^^^^
+KeyError: 'csrf_impl'
+2025-08-17 19:42:12,613 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:32]
+2025-08-17 19:48:36,898 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 19:49:07,204 ERROR: Exception on /api/projects [POST] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 74, in create_project
+    form = ProjectForm(json=data)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 209, in __call__
+    return type.__call__(cls, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_wtf\form.py", line 73, in __init__
+    super().__init__(formdata=formdata, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 281, in __init__
+    super().__init__(self._unbound_fields, meta=meta_obj, prefix=prefix)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 49, in __init__
+    field = meta.bind_field(self, unbound_field, options)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\meta.py", line 28, in bind_field
+    return unbound_field.bind(form=form, **options)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\fields\core.py", line 387, in bind
+    return self.field_class(*self.args, **kw)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\csrf\core.py", line 20, in __init__
+    self.csrf_impl = kw.pop("csrf_impl")
+                     ~~~~~~^^^^^^^^^^^^^
+KeyError: 'csrf_impl'
+2025-08-17 19:54:00,739 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 19:54:55,855 ERROR: Exception on /api/projects [POST] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 74, in create_project
+    form = ProjectForm(data=data, meta={'csrf': False})
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 209, in __call__
+    return type.__call__(cls, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_wtf\form.py", line 73, in __init__
+    super().__init__(formdata=formdata, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 281, in __init__
+    super().__init__(self._unbound_fields, meta=meta_obj, prefix=prefix)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 49, in __init__
+    field = meta.bind_field(self, unbound_field, options)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\meta.py", line 28, in bind_field
+    return unbound_field.bind(form=form, **options)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\fields\core.py", line 387, in bind
+    return self.field_class(*self.args, **kw)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\csrf\core.py", line 20, in __init__
+    self.csrf_impl = kw.pop("csrf_impl")
+                     ~~~~~~^^^^^^^^^^^^^
+KeyError: 'csrf_impl'
+2025-08-17 19:58:56,643 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 20:28:52,769 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]

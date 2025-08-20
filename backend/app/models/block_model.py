@@ -2,6 +2,7 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from app import db
 from app.models.project_model import Project
+from typing import List
 
 class Block(db.Model):
     __tablename__ = "blocks"
@@ -14,8 +15,8 @@ class Block(db.Model):
     )
     project: so.Mapped["Project"] = so.relationship(back_populates="blocks")
 
-    floors: so.WriteOnlyMapped["Floor"] = so.relationship(
-        back_populates="block", cascade="all, delete-orphan"
+    floors: so.Mapped[List["Floor"]] = so.relationship(
+    back_populates="block", cascade="all, delete-orphan"
     )
 
     def __repr__(self):

@@ -1,4 +1,10 @@
-2025-08-20 10:45:54,698 ERROR: Exception on /api/works [POST] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+2025-08-19 10:44:17,504 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-19 10:59:55,755 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-19 11:07:49,487 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-19 11:23:07,899 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-19 11:41:08,642 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-19 19:15:13,621 INFO: Test task [in B:\IT\Web\copy3\backend\app\__init__.py:33]
+2025-08-19 19:49:19,241 ERROR: Exception on /api/work_types [POST] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
 Traceback (most recent call last):
   File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
     self.dialect.do_execute(
@@ -10,7 +16,7 @@ Traceback (most recent call last):
   File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
     cursor.execute(statement, parameters)
     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlite3.OperationalError: database is locked
+sqlite3.IntegrityError: UNIQUE constraint failed: work_types.name
 
 The above exception was the direct cause of the following exception:
 
@@ -27,7 +33,7 @@ Traceback (most recent call last):
   File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "B:\IT\Web\test_task2\backend\app\api\handlers.py", line 259, in create_work
+  File "B:\IT\Web\copy3\backend\app\api\handlers.py", line 314, in create_work_type
     db.session.commit()
     ~~~~~~~~~~~~~~~~~^^
   File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\scoping.py", line 599, in commit
@@ -134,30 +140,18 @@ Traceback (most recent call last):
   File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
     cursor.execute(statement, parameters)
     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) database is locked
-[SQL: INSERT INTO works (executor_id, work_type_id, start_date, end_date, status, priority, progress, note, floor_id, object_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
-[parameters: (1, 2, '2025-08-20', '2025-08-20', 'in-progress', 'high', 33, '', 2, 5)]
-(Background on this error at: https://sqlalche.me/e/20/e3q8)
-2025-08-20 10:48:41,187 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]
-2025-08-20 10:48:56,438 ERROR: Exception on /api/works [POST] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
-Traceback (most recent call last):
-  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
-    response = self.full_dispatch_request()
-  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
-    return cors_after_request(app.make_response(f(*args, **kwargs)))
-                                                ~^^^^^^^^^^^^^^^^^
-  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "B:\IT\Web\test_task2\backend\app\api\handlers.py", line 243, in create_work
-    print([i.data for i in form.priority])
-                           ^^^^^^^^^^^^^
-TypeError: 'StringField' object is not iterable
-2025-08-20 10:49:30,965 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]
-2025-08-20 10:53:16,473 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]
-2025-08-20 12:06:32,750 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]
-2025-08-20 12:28:50,595 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:27]
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: work_types.name
+[SQL: INSERT INTO work_types (name, "order", color, category) VALUES (?, ?, ?, ?)]
+[parameters: ('Штукатурка', 1, '#e53e3e', 'Черновые')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-08-19 19:51:03,693 INFO: Test task [in B:\IT\Web\copy3\backend\app\__init__.py:33]
+2025-08-19 19:55:45,758 INFO: Test task [in B:\IT\Web\copy3\backend\app\__init__.py:33]
+2025-08-19 21:19:59,485 INFO: Test task [in B:\IT\Web\copy3\backend\app\__init__.py:33]
+2025-08-19 22:20:46,994 INFO: Test task [in B:\IT\Web\copy3\backend\app\__init__.py:33]
+2025-08-19 22:33:02,231 INFO: Test task [in B:\IT\Web\copy3\backend\app\__init__.py:33]
+2025-08-20 10:03:26,746 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]
+2025-08-20 10:20:15,265 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]
+2025-08-20 10:32:00,610 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]
+2025-08-20 10:32:56,420 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]
+2025-08-20 10:42:51,239 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]
+2025-08-20 10:45:45,775 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:33]

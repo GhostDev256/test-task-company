@@ -1,0 +1,106 @@
+2025-08-17 20:40:44,546 ERROR: Exception on /api/projects [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 61, in get_projects
+    return jsonify([to_dict(p) for p in projects])
+                    ~~~~~~~^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+TypeError: 'Block' object is not iterable
+2025-08-17 20:40:45,584 ERROR: Exception on /api/projects [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 61, in get_projects
+    return jsonify([to_dict(p) for p in projects])
+                    ~~~~~~~^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+TypeError: 'Block' object is not iterable
+2025-08-17 20:40:46,529 ERROR: Exception on /api/projects [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 61, in get_projects
+    return jsonify([to_dict(p) for p in projects])
+                    ~~~~~~~^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+TypeError: 'Block' object is not iterable
+2025-08-17 20:48:37,590 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 20:48:49,267 ERROR: Exception on /api/projects [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 61, in get_projects
+    return jsonify([to_dict(p) for p in projects])
+                    ~~~~~~~^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+TypeError: 'Block' object is not iterable
+2025-08-17 20:48:50,334 ERROR: Exception on /api/projects [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 61, in get_projects
+    return jsonify([to_dict(p) for p in projects])
+                    ~~~~~~~^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+TypeError: 'Block' object is not iterable

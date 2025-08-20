@@ -1,99 +1,105 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../styles/common/EditWindow.module.scss';
+import styles from '../../styles/common/CreateWindow.module.scss'; 
+import { createExecutor, getExecutors } from '../../../api/index.js'; 
 
-export default function EditWindow({
+export default function CreateWorkWindow({
     isOpen,
     onClose,
-    work: initialWork,
     projects,
     workTypes,
     executors,
-    editWork,
-    showNotification
+    addWork,
+    showNotification,
+    fetchExecutors 
 }) {
     const [formData, setFormData] = useState({});
 
     useEffect(() => {
-        if (isOpen && initialWork) {
+        if (isOpen) {
+            const defaultProjectCode = projects.length > 0 ? projects[0].code : '';
+            const defaultProject = projects.find(p => p.code === defaultProjectCode);
+            const defaultBlock = defaultProject?.blocks?.[0] || null;
+            const defaultFloorId = defaultBlock?.floors?.[0]?.id || '';
+            const defaultObjectId = defaultProject?.objects?.[0]?.id || '';
+
             setFormData({
-                project: initialWork.project || '',
-                block: initialWork.block || '',
-                floor: initialWork.floor || '',
-                object: initialWork.object || '',
-                category: initialWork.category || '',
-                workType: initialWork.workType || '',
-                executor: initialWork.executor || '',
-                startDate: initialWork.startDate || '',
-                endDate: initialWork.endDate || '',
-                progress: initialWork.progress || 0,
-                status: initialWork.status || 'not-started',
-                priority: initialWork.priority || 'medium',
-                notes: initialWork.notes || ''
+                project: defaultProjectCode,
+                block: defaultBlock?.name || '',
+                floor: defaultFloorId,
+                object: defaultObjectId,
+                category: '',
+                workType: '',
+                executor: '',
+                startDate: new Date().toISOString().split('T')[0],
+                endDate: new Date().toISOString().split('T')[0],
+                progress: 0,
+                status: 'not-started',
+                priority: 'medium',
+                notes: ''
             });
         }
-    }, [isOpen, initialWork]);
+    }, [isOpen, projects]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const getFloorsForBlock = (projectCode, blockName) => {
-        const project = projects.find(p => p.code === projectCode);
-        if (project && project.blocks && project.blocks[blockName]) {
-            return project.blocks[blockName].floors || [];
-        }
-        return [];
-    };
-
-    const getObjectsForProject = (projectCode) => {
-        const project = projects.find(p => p.code === projectCode);
-        return project?.objects || [];
-    };
-
     const getFilteredWorkTypes = (category) => {
         if (!category) return workTypes;
         return workTypes.filter(wt => wt.category === category);
     };
-
+      
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const workTypeInfo = workTypes.find(wt => wt.name === formData.workType);
-
-        const updatedWorkData = {
-            executor_id: executors.find(e => e.name === formData.executor)?.id,
-            work_type_id: workTypeInfo?.id,
-            start_date: formData.startDate,
-            end_date: formData.endDate,
-            status: formData.status,
-            priority: parseInt(formData.priority),
-            progress: parseInt(formData.progress),
-            note: formData.notes,
-            floor_id: projects.find(p => p.code === formData.project)?.blocks[formData.block]?.floors.find(f => f.number === formData.floor)?.id,
-            object_id: projects.find(p => p.code === formData.project)?.objects.find(o => o.name === formData.object)?.id,
-        };
-
-        if (!updatedWorkData.executor_id || !updatedWorkData.work_type_id || !updatedWorkData.start_date || !updatedWorkData.end_date || !updatedWorkData.status || !updatedWorkData.floor_id || !updatedWorkData.object_id) {
-            showNotification('Please fill all required fields.', 'error');
-            return;
-        }
-        if (new Date(updatedWorkData.start_date) > new Date(updatedWorkData.end_date)) {
-            showNotification('Start date cannot be after end date.', 'error');
-            return;
-        }
-
+        
         try {
-            await editWork(initialWork.id, updatedWorkData);
-            showNotification('Work updated successfully!', 'success');
+            const workTypeInfo = workTypes.find(wt => wt.id === parseInt(formData.workType));
+
+            async function executorsLength() {
+                const executors = await getExecutors();
+                return executors.length;
+            }
+
+            let executorInfo = executors.find(e => e.name === formData.executor);
+            if (!executorInfo) {
+                try {
+                    const newExecutor = await createExecutor({id: executorsLength()+1, name: formData.executor });
+                    executorInfo = newExecutor;
+                    showNotification(`Создан новый исполнитель: ${newExecutor.name}`, 'info');
+                    await fetchExecutors();
+                } catch (error) {
+                    showNotification('Ошибка при создании нового исполнителя.', 'error');
+                    return;
+                }
+            }
+            
+            const workData = {
+                executor_id: executorInfo.id,
+                work_type_id: workTypeInfo.id,
+                start_date: formData.startDate,
+                end_date: formData.endDate,
+                status: formData.status,
+                priority: formData.priority,
+                progress: formData.progress,
+                note: formData.notes,
+                floor_id: parseInt(formData.floor), 
+                object_id: parseInt(formData.object)
+            };
+            console.log('Отправляемые данные:', workData);
+
+            await addWork(workData);
+            showNotification('Работа успешно сохранена!', 'success');
             onClose();
+
         } catch (error) {
-            showNotification(`Error: ${error.message}`, 'error');
-            console.error('Work update error:', error);
+            console.error('Work save error:', error);
+            showNotification(`Ошибка сохранения работы: ${error.message || 'Проверьте консоль'}`, 'error');
         }
     };
-
+    
     const currentProject = projects.find(p => p.code === formData.project);
-    const currentBlock = currentProject?.blocks?.[formData.block];
+    const currentBlock = currentProject?.blocks?.find(b => b.name === formData.block);
     const availableFloors = currentBlock?.floors || [];
     const availableObjects = currentProject?.objects || [];
     const availableWorkTypes = getFilteredWorkTypes(formData.category);
@@ -104,7 +110,7 @@ export default function EditWindow({
         <div className={styles.modal}>
             <div className={styles.modalContent}>
                 <div className={styles.modalHeader}>
-                    <h2 className={styles.modalTitle}>Редактировать работу</h2>
+                    <h2 className={styles.modalTitle}>Добавить работу</h2>
                     <span className={styles.close} onClick={onClose}>&times;</span>
                 </div>
                 
@@ -113,7 +119,7 @@ export default function EditWindow({
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>Проект</label>
                             <select className={styles.formControl} name="project" value={formData.project || ''} onChange={handleChange} required>
-                                <option value="">Выберите проект</option>
+                                <option  value="">Выберите проект</option>
                                 {projects.map(p => <option key={p.code} value={p.code}>{p.icon} {p.name}</option>)}
                             </select>
                         </div>
@@ -122,8 +128,8 @@ export default function EditWindow({
                             <label className={styles.formLabel}>Блок</label>
                             <select className={styles.formControl} name="block" value={formData.block || ''} onChange={handleChange} required>
                                 <option value="">Выберите блок</option>
-                                {currentProject?.blocks && Object.keys(currentProject.blocks).map(blockName => (
-                                    <option key={blockName} value={blockName}>{blockName}</option>
+                                {currentProject?.blocks?.map(block => (
+                                    <option key={block.id} value={block.name}>{block.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -132,8 +138,8 @@ export default function EditWindow({
                             <label className={styles.formLabel}>Этаж</label>
                             <select className={styles.formControl} name="floor" value={formData.floor || ''} onChange={handleChange} required>
                                 <option value="">Выберите этаж</option>
-                                {availableFloors.map(floorNum => (
-                                    <option key={floorNum} value={floorNum}>{floorNum}</option>
+                                {availableFloors.map(floor => (
+                                    <option key={floor.id} value={floor.id}>{floor.number}</option>
                                 ))}
                             </select>
                         </div>
@@ -142,8 +148,8 @@ export default function EditWindow({
                             <label className={styles.formLabel}>Объект</label>
                             <select className={styles.formControl} name="object" value={formData.object || ''} onChange={handleChange} required>
                                 <option value="">Выберите объект</option>
-                                {availableObjects.map(objName => (
-                                    <option key={objName} value={objName}>{objName}</option>
+                                {availableObjects.map(obj => (
+                                    <option key={obj.id} value={obj.id}>{obj.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -151,7 +157,7 @@ export default function EditWindow({
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>Категория работ</label>
                             <select className={styles.formControl} name="category" value={formData.category || ''} onChange={handleChange}>
-                                <option value="">Все категории</option>
+                                <option key="all-categories" value="">Все категории</option>
                                 {[...new Set(workTypes.map(wt => wt.category))].map(cat => (
                                     <option key={cat} value={cat}>{cat}</option>
                                 ))}
@@ -163,19 +169,25 @@ export default function EditWindow({
                             <select className={styles.formControl} name="workType" value={formData.workType || ''} onChange={handleChange} required>
                                 <option value="">Выберите вид работы</option>
                                 {availableWorkTypes.map(wt => (
-                                    <option key={wt.id} value={wt.name}>{wt.name} (#{wt.order})</option>
+                                    <option key={wt.id} value={wt.id}>{wt.name} (#{wt.order})</option>
                                 ))}
                             </select>
                         </div>
                         
                         <div className={styles.formGroup}>
                             <label className={styles.formLabel}>Исполнитель</label>
-                            <select className={styles.formControl} name="executor" value={formData.executor || ''} onChange={handleChange} required>
-                                <option value="">Выберите исполнителя</option>
-                                {executors.map(exec => (
-                                    <option key={exec.id} value={exec.name}>{exec.name}</option>
-                                ))}
-                            </select>
+                            <input
+                                type="text"
+                                className={styles.formControl}
+                                name="executor"
+                                value={formData.executor || ''}
+                                onChange={handleChange}
+                                list="executors-list"
+                                required
+                            />
+                            <datalist id="executors-list">
+                                {executors.map(e => <option key={e.id} value={e.name} />)}
+                            </datalist>
                         </div>
                         
                         <div className={styles.formGroup}>
@@ -208,7 +220,7 @@ export default function EditWindow({
                         </div>
                         
                         <div className={styles.formGroupFullWidth}>
-                            <label className={styles.formLabel}>Прогресс: <span id="progressValue">{formData.progress || 0}</span>%</label>
+                            <label className={styles.formLabel}>Прогресс: <span>{formData.progress || 0}</span>%</label>
                             <input type="range" className={styles.formControl} name="progress" min="0" max="100" value={formData.progress || 0} onChange={handleChange} style={{height: '10px'}} />
                         </div>
 
@@ -220,7 +232,7 @@ export default function EditWindow({
                     
                     <div className={styles.modalFooter}>
                         <button type="button" className={`${styles.btn} ${styles.btnDanger}`} onClick={onClose}>Отмена</button>
-                        <button type="submit" className={`${styles.btn} ${styles.btnSuccess}`}>Сохранить</button>
+                        <button type="submit" className={`${styles.btn} ${styles.btnSuccess}`}>Сохранить работу</button>
                     </div>
                 </form>
             </div>

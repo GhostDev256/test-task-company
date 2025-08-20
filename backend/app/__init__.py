@@ -1,22 +1,19 @@
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_login import LoginManager
 from flask_cors import CORS
+from flask_migrate import Migrate
 import logging
 from logging.handlers import RotatingFileHandler
 import os
 
 application = Flask(__name__)
-CORS(application)
+CORS(application, supports_credentials=True)
 application.config.from_object(Config)
 
 db = SQLAlchemy(application)
 migrate = Migrate(application, db)
 
-login = LoginManager(application)
-login.login_view = 'login'
 
 if not application.debug:
     if not os.path.exists('logs'):
@@ -33,4 +30,5 @@ from app.api.handlers import api_bp
 application.register_blueprint(api_bp)
 
 from app.models import user_model, project_model
+
 

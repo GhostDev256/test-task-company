@@ -1,0 +1,125 @@
+2025-08-17 20:29:29,424 ERROR: Exception on /api/projects [POST] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 113, in create_project
+    return jsonify(to_dict(project)), 201
+                   ~~~~~~~^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\writeonly.py", line 581, in __iter__
+    raise TypeError(
+    ...<3 lines>...
+    )
+TypeError: WriteOnly collections don't support iteration in-place; to query for collection items, use the select() method to produce a SQL statement and execute it with session.scalars().
+2025-08-17 20:34:10,093 ERROR: Exception on /api/projects [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 61, in get_projects
+    return jsonify([to_dict(p) for p in projects])
+                    ~~~~~~~^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\writeonly.py", line 581, in __iter__
+    raise TypeError(
+    ...<3 lines>...
+    )
+TypeError: WriteOnly collections don't support iteration in-place; to query for collection items, use the select() method to produce a SQL statement and execute it with session.scalars().
+2025-08-17 20:34:11,150 ERROR: Exception on /api/projects [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 61, in get_projects
+    return jsonify([to_dict(p) for p in projects])
+                    ~~~~~~~^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\writeonly.py", line 581, in __iter__
+    raise TypeError(
+    ...<3 lines>...
+    )
+TypeError: WriteOnly collections don't support iteration in-place; to query for collection items, use the select() method to produce a SQL statement and execute it with session.scalars().
+2025-08-17 20:34:12,101 ERROR: Exception on /api/projects [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 61, in get_projects
+    return jsonify([to_dict(p) for p in projects])
+                    ~~~~~~~^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\writeonly.py", line 581, in __iter__
+    raise TypeError(
+    ...<3 lines>...
+    )
+TypeError: WriteOnly collections don't support iteration in-place; to query for collection items, use the select() method to produce a SQL statement and execute it with session.scalars().
+2025-08-17 20:34:13,051 ERROR: Exception on /api/projects [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 61, in get_projects
+    return jsonify([to_dict(p) for p in projects])
+                    ~~~~~~~^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 40, in to_dict
+    result['blocks'] = {block.name: {'floors': [floor.number for floor in sorted(block.floors, key=lambda f: f.number)]} for block in instance.blocks}
+                                                                                                                                      ^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\writeonly.py", line 581, in __iter__
+    raise TypeError(
+    ...<3 lines>...
+    )
+TypeError: WriteOnly collections don't support iteration in-place; to query for collection items, use the select() method to produce a SQL statement and execute it with session.scalars().

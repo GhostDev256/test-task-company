@@ -1,8 +1,7 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from app import db
-from app.models.project_model import Project
-from app.models.work_model import Work
+from typing import List
 
 class Object(db.Model):
     __tablename__ = "objects"
@@ -15,7 +14,11 @@ class Object(db.Model):
     )
     project: so.Mapped["Project"] = so.relationship(back_populates="objects")
 
-    works: so.WriteOnlyMapped["Work"] = so.relationship(back_populates="object")
+    works: so.Mapped[List["Work"]] = so.relationship(
+        back_populates="object", 
+        cascade="all, delete-orphan", 
+        passive_deletes=True
+    )
 
     def __repr__(self):
         return f"<Object {self.name}>"

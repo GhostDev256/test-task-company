@@ -1,0 +1,172 @@
+2025-08-17 12:40:11,863 ERROR: Exception on /api/work_types [GET] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: work_types
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\app\api\handlers.py", line 218, in get_work_types
+    work_types = WorkType.query.all()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ~~~~~~~~~~^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+        params,
+        ^^^^^^^
+        execution_options={"_sa_orm_load_options": self.load_options},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\session.py", line 2365, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\orm\context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\sql\elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\sqlalchemy\engine\default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: work_types
+[SQL: SELECT work_types.id AS work_types_id, work_types.name AS work_types_name, work_types."order" AS work_types_order, work_types.color AS work_types_color, work_types.category AS work_types_category 
+FROM work_types]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-08-17 12:43:38,197 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:30]
+2025-08-17 12:43:56,322 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:30]
+2025-08-17 12:44:00,779 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:30]
+2025-08-17 12:44:07,946 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:30]
+2025-08-17 12:44:38,376 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:30]
+2025-08-17 13:19:35,089 INFO: Test task [in B:\IT\Web\test_task2\backend\app\__init__.py:30]
+2025-08-17 16:21:25,647 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:30]
+2025-08-17 17:32:44,780 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:31]
+2025-08-17 17:40:50,780 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:32]
+2025-08-17 17:51:11,057 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:34]
+2025-08-17 18:00:14,268 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:34]
+2025-08-17 18:01:27,733 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:34]
+2025-08-17 18:04:34,435 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:34]
+2025-08-17 18:20:34,427 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:34]
+2025-08-17 18:39:23,163 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-17 18:46:03,524 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-17 18:47:29,976 ERROR: Exception on /api/projects [POST] [in B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py:875]
+Traceback (most recent call last):
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\IT\Web\copy\backend\app\api\handlers.py", line 74, in create_project
+    form = ProjectForm(data=data)
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 209, in __call__
+    return type.__call__(cls, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\flask_wtf\form.py", line 73, in __init__
+    super().__init__(formdata=formdata, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 287, in __init__
+    self.process(formdata, obj, data=data, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\form.py", line 128, in process
+    field.process(formdata, data, extra_filters=field_extra_filters)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\fields\core.py", line 320, in process
+    self.process_formdata(self.raw_data)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\IT\Web\test_task2\backend\Lib\site-packages\wtforms\fields\numeric.py", line 165, in process_formdata
+    self.data = decimal.Decimal(valuelist[0])
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+TypeError: conversion from NoneType to Decimal is not supported
+2025-08-17 18:57:44,288 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-17 19:01:49,174 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
+2025-08-17 19:03:53,531 INFO: Test task [in B:\IT\Web\copy\backend\app\__init__.py:33]
