@@ -134,7 +134,7 @@ export default function MainPage() {
             case 'today':
                 const today = new Date().toISOString().split('T')[0];
                 filtered = filtered.filter(w => 
-                    w.startDate <= today && w.endDate >= today
+                    w.start_date <= today && w.end_date >= today
                 );
                 break;
             case 'overdue':
@@ -183,7 +183,7 @@ export default function MainPage() {
                 case 'progress':
                     return (b.progress || 0) - (a.progress || 0);
                 case 'date':
-                    return new Date(a.startDate) - new Date(b.startDate);
+                    return new Date(a.start_date) - new Date(b.start_date);
                 case 'status':
                     const statusOrder = { 'overdue': 0, 'in-progress': 1, 'not-started': 2, 'completed': 3 };
                     return statusOrder[a.status] - statusOrder[b.status];
@@ -542,7 +542,7 @@ export default function MainPage() {
                                                     </div>
                                                     <div className={styles.workDetail}>
                                                         <span className={styles.workDetailLabel}>Период:</span>
-                                                        <span className={styles.workDetailValue}>{formatDate(work.startDate)} - {formatDate(work.endDate)}</span>
+                                                        <span className={styles.workDetailValue}>{formatDate(work.start_date)} - {formatDate(work.end_date)}</span>
                                                     </div>
                                                     <div className={styles.workDetail}>
                                                         <span className={styles.workDetailLabel}>Статус:</span>

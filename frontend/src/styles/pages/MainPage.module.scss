@@ -1,4 +1,3 @@
-/* Верхняя панель навигации */
 .topNavbar {
     background: white;
     padding: 15px 20px;
@@ -85,7 +84,6 @@
     border-color: #667eea;
 }
 
-/* Нижняя панель */
 .bottomNavbar {
     background: rgba(255, 255, 255, 0.95);
     padding: 10px 20px;
@@ -117,7 +115,6 @@
     font-size: 12px;
 }
 
-/* Кнопки */
 .btn {
     padding: 8px 16px;
     border: none;
@@ -186,7 +183,6 @@
 
 .active {
     background: #667eea;
-    color: white;
     border-color: #667eea;
 }
 
@@ -196,7 +192,6 @@
     padding: 20px;
 }
 
-/* Дашборд */
 .dashboard {
     background: white;
     border-radius: 15px;
@@ -271,7 +266,6 @@
     border-color: #667eea;
 }
 
-/* Рабочая область */
 .mainWorkspace {
     display: grid;
     grid-template-columns: 350px 1fr;
@@ -279,7 +273,6 @@
     min-height: 600px;
 }
 
-/* Боковая панель */
 .sidebar {
     background: white;
     border-radius: 15px;
@@ -309,7 +302,101 @@
     gap: 8px;
 }
 
-/* Область контента */
+.treeProject {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.treeProjectHeader {
+    padding: 15px;
+    background: #e9ecef;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.treeProjectHeader:hover {
+    background: #dee2e6;
+}
+
+.treeProject.active .treeProjectHeader {
+    background: #667eea;
+}
+
+.treeProjectName {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.treeBlocks {
+    display: none;
+    padding: 10px;
+}
+
+.treeProject.active .treeBlocks {
+    display: block;
+}
+
+.treeBlock {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.treeBlockHeader {
+    padding: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.treeBlockHeader:hover {
+    background: #f8f9fa;
+}
+
+.treeBlock.active .treeBlockHeader {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.treeFloors {
+    display: none;
+    padding: 10px;
+    background: #f8f9fa;
+}
+
+.treeBlock.active .treeFloors {
+    display: block;
+}
+
+.treeFloor {
+    padding: 8px 12px;
+    margin: 3px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.treeFloor:hover {
+    background: #e3f2fd;
+}
+
+.treeFloor.selected {
+    background: #1976d2;
+}
+
 .contentArea {
     background: white;
     border-radius: 15px;
@@ -341,7 +428,6 @@
     gap: 10px;
 }
 
-/* Пустое состояние */
 .emptyState {
     text-align: center;
     padding: 80px 20px;
@@ -361,4 +447,202 @@
 .emptyState p {
     margin-bottom: 20px;
     font-size: 16px;
+}
+
+.worksGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 15px;
+}
+
+.workCard {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    border-left: 4px solid #dee2e6;
+}
+
+.workCard:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+}
+
+.workCard.techOrder-1 { border-left-color: #e53e3e; }
+.workCard.techOrder-2 { border-left-color: #fd7900; }
+.workCard.techOrder-3 { border-left-color: #fbb917; }
+.workCard.techOrder-4 { border-left-color: #38a169; }
+.workCard.techOrder-5 { border-left-color: #3182ce; }
+.workCard.techOrder-6 { border-left-color: #805ad5; }
+.workCard.techOrder-7 { border-left-color: #9c88ff; }
+.workCard.techOrder-8 { border-left-color: #48bb78; }
+.workCard.techOrder-9 { border-left-color: #ed8936; }
+.workCard.techOrder-10 { border-left-color: #38b2ac; }
+.workCard.techOrder-11 { border-left-color: #667eea; }
+.workCard.techOrder-12 { border-left-color: #e53e3e; }
+.workCard.techOrder-13 { border-left-color: #718096; }
+.workCard.techOrder-14 { border-left-color: #4a5568; }
+.workCard.techOrder-15 { border-left-color: #2d3748; }
+.workCard.techOrder-16 { border-left-color: #1a202c; }
+.workCard.techOrder-17 { border-left-color: #e53e3e; }
+.workCard.techOrder-18 { border-left-color: #718096; }
+.workCard.techOrder-19 { border-left-color: #fd7900; }
+.workCard.techOrder-20 { border-left-color: #38a169; }
+
+.workHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.workTitle {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.workActions {
+    display: flex;
+    gap: 5px;
+}
+
+.workDetails {
+    margin-bottom: 15px;
+}
+
+.workDetail {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.workDetailLabel {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.workDetailValue {
+    color: #333;
+    font-weight: 600;
+}
+
+.techOrderBadge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    margin-left: 8px;
+}
+
+.categoryBadge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    margin-left: 5px;
+    opacity: 0.8;
+}
+
+.progressSection {
+    margin-top: 15px;
+}
+
+.progressBar {
+    width: 100%;
+    height: 24px;
+    background: #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    margin: 8px 0;
+    position: relative;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745, #20c997);
+    transition: width 0.4s ease;
+    border-radius: 12px;
+}
+
+.progressText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+}
+
+.statusControls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.statusBtn {
+    padding: 6px 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.statusNotStarted {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+}
+
+.statusNotStarted.active {
+    background: #6c757d;
+    color: white;
+}
+
+.statusInProgress {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.statusInProgress.active {
+    background: #856404;
+    color: white;
+}
+
+.statusCompleted {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.statusCompleted.active {
+    background: #0c5460;
+    color: white;
+}
+
+.statusOverdue {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f1b0b7;
+}
+
+.statusOverdue.active {
+    background: #721c24;
+    color: white;
 }
