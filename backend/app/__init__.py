@@ -14,7 +14,6 @@ application.config.from_object(Config)
 db = SQLAlchemy(application)
 migrate = Migrate(application, db)
 
-
 if not application.debug:
     if not os.path.exists('logs'):
         os.mkdir('logs')

@@ -223,11 +223,6 @@ export default function MainPage() {
             <nav className={styles.topNavbar}>
                 <div className={styles.navbarRow}>
                     <h1 className={styles.brand}> 🏗️ Система управления строительными проектами </h1>
-                    <div className={styles.topActions}>
-                        <button className={`${styles.btn} ${styles.btnSuccess}`} onClick={() => setIsCreateWorkModalOpen(true)}>➕ Добавить работу</button> 
-                        <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => setIsProjectModalOpen(true)}>🏗️ Новый проект</button>
-                        <button className={`${styles.btn} ${styles.btnWarning}`} onClick={handleSeedData}>📥 Загрузить демо данные</button>
-                    </div>
                 </div>
 
                 <div className={styles.navbarRow}>
@@ -239,48 +234,7 @@ export default function MainPage() {
                             placeholder="🔍 Поиск по работам, объектам, этажам, исполнителям..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        
-                        <div className={styles.filtersGroup}>
-                            {[
-                                { id: "allWorksFilter", label: "📋 Все работы", filterType: "all" },
-                                { id: "completedFilter", label: "✅ Выполненные", filterType: "completed" },
-                                { id: "notCompletedFilter", label: "⏳ Невыполненные", filterType: "not-completed" },
-                                { id: "todayFilter", label: "📅 Сегодня", filterType: "today" },
-                                { id: "overdueFilter", label: "🚨 Просрочено", filterType: "overdue"},
-                            ].map((cat, index) => (
-                                <button
-                                    key={cat.id}
-                                    id={cat.id}
-                                    className={`${styles.filterBtn} ${globalFilter === cat.filterType ? styles.active : ""}`}
-                                    onClick={() => setGlobalFilter(cat.filterType)}
-                                >
-                                    {cat.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                <div className={styles.navbarRow}>
-                    <div className={styles.categoryFilters} id="categoryFilters">
-                        {[
-                            { id: "allCategories", label: "Все категории", categoryType: "all" },
-                            { id: "roughWork", label: "Черновые", categoryType: "Черновые работы" },
-                            { id: "finishingWorks", label: "Отделочные", categoryType: "Отделочные работы" },
-                            { id: "ceilings", label: "Потолки", categoryType: "Потолки" },
-                            { id: "сonstructions", label: "Конструкции", categoryType: "Конструкции"},
-                            { id: "finalWorks", label: "Завершающие", categoryType: "Завершающие работы"},
-                        ].map((cat) => (
-                            <button
-                                key={cat.id}
-                                id={cat.id}
-                                className={`${styles.categoryFilter} ${categoryFilter === cat.categoryType ? styles.active : ""}`}
-                                onClick={() => setCategoryFilter(cat.categoryType)}
-                            >
-                                {cat.label}
-                            </button>
-                        ))}
+                        />                   
                     </div>
                 </div>
             </nav>
@@ -369,8 +323,7 @@ export default function MainPage() {
                     </div>
                 </div>
             </aside>
-            <section>       
-                <div className={styles.mainWorkspace}>
+            <section className={styles.mainWorkspace}>       
                     <div className={styles.sidebar}>
                         <div className={styles.sidebarSection}>
                             <div className={styles.sidebarTitle}>
@@ -446,131 +399,167 @@ export default function MainPage() {
                             </div>
                         </div>
                     </div>
-
-                    <div className={styles.contentArea}>
-                        <div className={styles.contentHeader}>
-                            <div className={styles.contentTitle} id="contentTitle">
-                                {(() => {
-                                    if (selectedProject && selectedBlock && selectedFloor) {
-                                        const project = projects.find(p => p.code === selectedProject);
-                                        return `📋 ${project?.name || ''} - ${selectedBlock} - ${selectedFloor} (${filteredAndSortedWorks.length} работ)`;
-                                    } else if (selectedProject && selectedBlock) {
-                                        const project = projects.find(p => p.code === selectedProject);
-                                        return `🏢 ${project?.name || ''} - ${selectedBlock} (${filteredAndSortedWorks.length} работ)`;
-                                    } else if (selectedProject) {
-                                        const project = projects.find(p => p.code === selectedProject);
-                                        return `🏗️ ${project?.name || ''} (${filteredAndSortedWorks.length} работ)`;
-                                    } else if (activeProject !== 'all') {
-                                        const project = projects.find(p => p.code === activeProject);
-                                        return `🏗️ ${project?.name || ''} (${filteredAndSortedWorks.length} работ)`;
-                                    } else {
-                                        return `🌐 Все проекты (${filteredAndSortedWorks.length} работ)`;
-                                    }
-                                })()}
-                            </div>
-                            <div className={styles.contentActions}>
-                                <button className={`${styles.btn} ${styles.btnSuccess}`} onClick={() => setIsCreateWorkModalOpen(true)}>➕ Добавить работу</button>
-                            </div>
-                        </div>
-                        
-                        <div id="worksContainer">
-                            {filteredAndSortedWorks.length === 0 ? (
-                            <div className={styles.emptyState}>
-                                
-                                <div className={styles.emptyStateIcon}>🏗️</div>
-                                    <h3>Добро пожаловать в систему управления строительными проектами</h3>
-                                    <p>Создайте новый проект или выберите существующий для начала работы</p>
-                                    <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => setIsProjectModalOpen(true)}>🏗️ Создать первый проект</button>
+                    <section>
+                        <div className={styles.filterBarRow}>
+                                <div className={styles.filtersGroup}>
+                                    {[
+                                        { id: "allWorksFilter", label: "📋 Все работы", filterType: "all" },
+                                        { id: "completedFilter", label: "✅ Выполненные", filterType: "completed" },
+                                        { id: "notCompletedFilter", label: "⏳ Невыполненные", filterType: "not-completed" },
+                                        { id: "todayFilter", label: "📅 Сегодня", filterType: "today" },
+                                        { id: "overdueFilter", label: "🚨 Просрочено", filterType: "overdue"},
+                                    ].map((cat, _) => (
+                                        <button
+                                            key={cat.id}
+                                            id={cat.id}
+                                            className={`${styles.filterBtn} ${globalFilter === cat.filterType ? styles.active : ""}`}
+                                            onClick={() => setGlobalFilter(cat.filterType)}
+                                        >
+                                            {cat.label}
+                                        </button>
+                                    ))}
                                 </div>
-                            ) : (
-                                <div className={styles.worksGrid}>
-                                    {filteredAndSortedWorks.map(work => {
-                                        const workTypeInfo = workTypes.find(wt => wt.name === work.workType);
-                                        const techOrderClass = `tech-order-${Math.min(work.techOrder || 1, 20)}`;
-                                        const techOrderColor = workTypeInfo ? workTypeInfo.color : '#dee2e6';
-                                        
-                                        const getCategoryColor = (category) => {
-                                            const colors = {
-                                                'Черновые работы': '#e53e3e',
-                                                'Отделочные работы': '#38a169',
-                                                'Потолки': '#3182ce',
-                                                'Конструкции': '#805ad5',
-                                                'Напольные покрытия': '#ed8936',
-                                                'Специальные работы': '#fd7900',
-                                                'Завершающие работы': '#28a745'
-                                            };
-                                            return colors[category] || '#6c757d';
-                                        };
-
-                                        return (
-                                            <div key={work.id} className={`${styles.workCard} ${techOrderClass}`}>
-                                                <div className={styles.workHeader}>
-                                                    <div className={styles.workTitle}>
-                                                        {work.workType}
-                                                        <span className={styles.techOrderBadge} style={{background: techOrderColor}}>
-                                                            #{work.techOrder}
-                                                        </span>
-                                                        <span className={styles.categoryBadge} style={{background: getCategoryColor(work.category)}}>
-                                                            {work.category?.split(' ')[0]}
-                                                        </span>
-                                                    </div>
-                                                    <div className={styles.workActions}>
-                                                        <button className={`${styles.btn} ${styles.btnPrimary} ${styles.btnSmall}`} onClick={() => {
-                                                            setEditingWork(work);
-                                                            setIsEditWorkModalOpen(true);
-                                                        }} title="Редактировать">✏️</button>
-                                                        <button className={`${styles.btn} ${styles.btnDanger} ${styles.btnSmall}`} onClick={() => removeWork(work.id)} title="Удалить">🗑️</button>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div className={styles.workDetails}>
-                                                    <div className={styles.workDetail}>
-                                                        <span className={styles.workDetailLabel}>Проект:</span>
-                                                        <span className={styles.workDetailValue}>{(projects.find(p => p.code === work.project)?.icon || '')} {projects.find(p => p.code === work.project)?.name || 'Неизвестный проект'}</span>
-                                                    </div>
-                                                    <div className={styles.workDetail}>
-                                                        <span className={styles.workDetailLabel}>Блок/Этаж:</span>
-                                                        <span className={styles.workDetailValue}>{work.block} - {work.floor}</span>
-                                                    </div>
-                                                    <div className={styles.workDetail}>
-                                                        <span className={styles.workDetailLabel}>Объект:</span>
-                                                        <span className={styles.workDetailValue}>{work.object}</span>
-                                                    </div>
-                                                    <div className={styles.workDetail}>
-                                                        <span className={styles.workDetailLabel}>Исполнитель:</span>
-                                                        <span className={styles.workDetailValue}>{work.executor}</span>
-                                                    </div>
-                                                    <div className={styles.workDetail}>
-                                                        <span className={styles.workDetailLabel}>Период:</span>
-                                                        <span className={styles.workDetailValue}>{formatDate(work.start_date)} - {formatDate(work.end_date)}</span>
-                                                    </div>
-                                                    <div className={styles.workDetail}>
-                                                        <span className={styles.workDetailLabel}>Статус:</span>
-                                                        <span className={styles.workDetailValue}>{getStatusText(work.status)}</span>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div className={styles.progressSection}>
-                                                    <div className={styles.progressBar}>
-                                                        <div className={styles.progressFill} style={{width: `${work.progress}%`}}></div>
-                                                        <div className={styles.progressText}>{work.progress}% выполнено</div>
-                                                    </div>
-                                                </div>
-
-                                                <div className={styles.statusControls}>
-                                                    <button className={`${styles.statusBtn} ${styles.statusNotStarted} ${work.status === 'not-started' ? styles.active : ''}`} onClick={() => editWork(work.id, { ...work, status: 'not-started', progress: 0 })}>Не начато</button>
-                                                    <button className={`${styles.statusBtn} ${styles.statusInProgress} ${work.status === 'in-progress' ? styles.active : ''}`} onClick={() => editWork(work.id, { ...work, status: 'in-progress', progress: work.progress || 25 })}>В процессе</button>
-                                                    <button className={`${styles.statusBtn} ${styles.statusCompleted} ${work.status === 'completed' ? styles.active : ''}`} onClick={() => editWork(work.id, { ...work, status: 'completed', progress: 100 })}>Завершено</button>
-                                                    <button className={`${styles.statusBtn} ${styles.statusOverdue} ${work.status === 'overdue' ? styles.active : ''}`} onClick={() => editWork(work.id, { ...work, status: 'overdue' })}>Просрочено</button>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                <div className={styles.filtersGroup} id="categoryFilters">
+                                    {[
+                                        { id: "allCategories", label: "Все категории", categoryType: "all" },
+                                        { id: "roughWork", label: "Черновые", categoryType: "Черновые работы" },
+                                        { id: "finishingWorks", label: "Отделочные", categoryType: "Отделочные работы" },
+                                        { id: "ceilings", label: "Потолки", categoryType: "Потолки" },
+                                        { id: "сonstructions", label: "Конструкции", categoryType: "Конструкции"},
+                                        { id: "finalWorks", label: "Завершающие", categoryType: "Завершающие работы"},
+                                    ].map((cat) => (
+                                        <button
+                                            key={cat.id}
+                                            id={cat.id}
+                                            className={`${styles.filterBtn} ${categoryFilter === cat.categoryType ? styles.active : ""}`}
+                                            onClick={() => setCategoryFilter(cat.categoryType)}
+                                        >
+                                            {cat.label}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                            )}
+                        <div className={styles.contentArea}>
+                            <div className={styles.contentHeader}>
+                                <div className={styles.contentTitle} id="contentTitle">
+                                    {(() => {
+                                        if (selectedProject && selectedBlock && selectedFloor) {
+                                            const project = projects.find(p => p.code === selectedProject);
+                                            return `📋 ${project?.name || ''} - ${selectedBlock} - ${selectedFloor} (${filteredAndSortedWorks.length} работ)`;
+                                        } else if (selectedProject && selectedBlock) {
+                                            const project = projects.find(p => p.code === selectedProject);
+                                            return `🏢 ${project?.name || ''} - ${selectedBlock} (${filteredAndSortedWorks.length} работ)`;
+                                        } else if (selectedProject) {
+                                            const project = projects.find(p => p.code === selectedProject);
+                                            return `🏗️ ${project?.name || ''} (${filteredAndSortedWorks.length} работ)`;
+                                        } else if (activeProject !== 'all') {
+                                            const project = projects.find(p => p.code === activeProject);
+                                            return `🏗️ ${project?.name || ''} (${filteredAndSortedWorks.length} работ)`;
+                                        } else {
+                                            return `🌐 Все проекты (${filteredAndSortedWorks.length} работ)`;
+                                        }
+                                    })()}
+                                </div>
+                            </div>
+                            
+                            
+                            <div id="worksContainer">
+                                {filteredAndSortedWorks.length === 0 ? (
+                                <div className={styles.emptyState}>
+                                    <div className={styles.emptyStateIcon}>🏗️</div>
+                                        <h3>Добро пожаловать в систему управления строительными проектами</h3>
+                                        <p>Создайте новый проект или выберите существующий для начала работы</p>
+                                        <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => setIsProjectModalOpen(true)}>🏗️ Создать первый проект</button>
+                                    </div>
+                                ) : (
+                                    <div className={styles.worksGrid}>
+                                        {filteredAndSortedWorks.map(work => {
+                                            const workTypeInfo = workTypes.find(wt => wt.name === work.workType);
+                                            const techOrderClass = `techOrder-${work.techOrder}`;
+                                            const techOrderColor = workTypeInfo ? workTypeInfo.color : '#dee2e6';
+                                            
+                                            const getCategoryColor = (category) => {
+                                                const colors = {
+                                                    'Черновые работы': '#e53e3e',
+                                                    'Отделочные работы': '#38a169',
+                                                    'Потолки': '#3182ce',
+                                                    'Конструкции': '#805ad5',
+                                                    'Напольные покрытия': '#ed8936',
+                                                    'Специальные работы': '#fd7900',
+                                                    'Завершающие работы': '#28a745'
+                                                };
+                                                return colors[category] || '#6c757d';
+                                            };
+
+                                            return (
+                                                <div key={work.id} className={`${styles.workCard} ${techOrderClass}`}>
+                                                    <div className={styles.workHeader}>
+                                                        <div className={styles.workTitle}>
+                                                            {work.workType}
+                                                            <span className={styles.techOrderBadge} style={{background: techOrderColor}}>
+                                                                #{work.techOrder}
+                                                            </span>
+                                                            <span className={styles.categoryBadge} style={{background: getCategoryColor(work.category)}}>
+                                                                {work.category?.split(' ')[0]}
+                                                            </span>
+                                                        </div>
+                                                        <div className={styles.workActions}>
+                                                            <button className={`${styles.btn} ${styles.btnPrimary} ${styles.btnSmall}`} onClick={() => {
+                                                                setEditingWork(work);
+                                                                setIsEditWorkModalOpen(true);
+                                                            }} title="Редактировать">✏️</button>
+                                                            <button className={`${styles.btn} ${styles.btnDanger} ${styles.btnSmall}`} onClick={() => removeWork(work.id)} title="Удалить">🗑️</button>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div className={styles.workDetails}>
+                                                        <div className={styles.workDetail}>
+                                                            <span className={styles.workDetailLabel}>Проект:</span>
+                                                            <span className={styles.workDetailValue}>{(projects.find(p => p.code === work.project)?.icon || '')} {projects.find(p => p.code === work.project)?.name || 'Неизвестный проект'}</span>
+                                                        </div>
+                                                        <div className={styles.workDetail}>
+                                                            <span className={styles.workDetailLabel}>Блок/Этаж:</span>
+                                                            <span className={styles.workDetailValue}>{work.block} - {work.floor}</span>
+                                                        </div>
+                                                        <div className={styles.workDetail}>
+                                                            <span className={styles.workDetailLabel}>Объект:</span>
+                                                            <span className={styles.workDetailValue}>{work.object}</span>
+                                                        </div>
+                                                        <div className={styles.workDetail}>
+                                                            <span className={styles.workDetailLabel}>Исполнитель:</span>
+                                                            <span className={styles.workDetailValue}>{work.executor}</span>
+                                                        </div>
+                                                        <div className={styles.workDetail}>
+                                                            <span className={styles.workDetailLabel}>Период:</span>
+                                                            <span className={styles.workDetailValue}>{formatDate(work.start_date)} - {formatDate(work.end_date)}</span>
+                                                        </div>
+                                                        <div className={styles.workDetail}>
+                                                            <span className={styles.workDetailLabel}>Статус:</span>
+                                                            <span className={styles.workDetailValue}>{getStatusText(work.status)}</span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div className={styles.progressSection}>
+                                                        <div className={styles.progressBar}>
+                                                            <div className={styles.progressFill} style={{width: `${work.progress}%`}}></div>
+                                                            <div className={styles.progressText}>{work.progress}% выполнено</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className={styles.statusControls}>
+                                                        <button className={`${styles.statusBtn} ${styles.statusNotStarted} ${work.status === 'not-started' ? styles.active : ''}`} onClick={() => editWork(work.id, { ...work, status: 'not-started', progress: 0 })}>Не начато</button>
+                                                        <button className={`${styles.statusBtn} ${styles.statusInProgress} ${work.status === 'in-progress' ? styles.active : ''}`} onClick={() => editWork(work.id, { ...work, status: 'in-progress', progress: work.progress || 25 })}>В процессе</button>
+                                                        <button className={`${styles.statusBtn} ${styles.statusCompleted} ${work.status === 'completed' ? styles.active : ''}`} onClick={() => editWork(work.id, { ...work, status: 'completed', progress: 100 })}>Завершено</button>
+                                                        <button className={`${styles.statusBtn} ${styles.statusOverdue} ${work.status === 'overdue' ? styles.active : ''}`} onClick={() => editWork(work.id, { ...work, status: 'overdue' })}>Просрочено</button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </section>
             </section>
             {isProjectManagerOpen && (
             <ProjectManagerWindow 

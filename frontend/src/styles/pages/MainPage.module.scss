@@ -56,6 +56,16 @@
     border-color: #667eea;
 }
 
+.filterBarRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: rgb(247, 245, 245);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
 .filtersGroup {
     display: flex;
     gap: 8px;
@@ -196,7 +206,6 @@
     background: white;
     border-radius: 15px;
     padding: 20px;
-    margin-bottom: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
@@ -271,6 +280,8 @@
     grid-template-columns: 350px 1fr;
     gap: 20px;
     min-height: 600px;
+    padding: 0px 20px 0px 20px;
+    margin-bottom: 20px;
 }
 
 .sidebar {
@@ -279,7 +290,7 @@
     padding: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     overflow-y: auto;
-    max-height: 80vh;
+
 }
 
 .sidebarSection {
@@ -399,11 +410,12 @@
 
 .contentArea {
     background: white;
-    border-radius: 15px;
     padding: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     overflow-y: auto;
     max-height: 80vh;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 .contentHeader {
