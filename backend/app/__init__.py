@@ -8,7 +8,7 @@ from logging.handlers import RotatingFileHandler
 import os
 
 application = Flask(__name__)
-CORS(application, supports_credentials=True)
+CORS(application, supports_credentials=True, origins='https://portfolioghostdev.ru') 
 application.config.from_object(Config)
 
 db = SQLAlchemy(application)

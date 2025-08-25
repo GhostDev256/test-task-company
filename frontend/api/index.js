@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://portfolioghostdev.online/api'; /* http://localhost:5000/api */
 
 const handleResponse = async (response) => {
     if (!response.ok) {

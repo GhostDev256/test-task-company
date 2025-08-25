@@ -658,3 +658,197 @@
     background: #721c24;
     color: white;
 }
+
+@media (max-width: 768px) {
+    .topNavbar {
+        padding: 10px 15px;
+    }
+
+    .navbarRow {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+
+    .navbarRow:last-child {
+        margin-bottom: 0;
+    }
+
+    .brand {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .topActions {
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .globalSearchContainer {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .searchInput {
+        min-width: unset;
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .filterBarRow {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .filtersGroup {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .filterBtn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+
+    .bottomNavbar {
+        padding: 10px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .projectInfo {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .projectSelect {
+        min-width: unset;
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .projectMeta {
+        font-size: 11px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .mainWorkspace {
+        grid-template-columns: 1fr; /* Single column layout for mobile */
+        padding: 0px 15px 0px 15px;
+        min-height: unset;
+    }
+
+    .sidebar {
+        margin-bottom: 20px;
+    }
+
+    .dashboardHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .dashboardTitle {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .dashboardActions {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .statCard {
+        padding: 15px;
+    }
+
+    .statNumber {
+        font-size: 24px;
+    }
+
+    .statLabel {
+        font-size: 12px;
+    }
+
+    .formControl {
+        max-width: 100%;
+    }
+
+    .worksGrid {
+        grid-template-columns: 1fr; /* Single column for works cards on mobile */
+    }
+
+    .workCard {
+        padding: 15px;
+    }
+
+    .workHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+
+    .workTitle {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+
+    .workActions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .workDetail {
+        font-size: 13px;
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 5px 0;
+    }
+
+    .statusControls {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for status buttons */
+    }
+
+    .contentArea {
+        padding: 15px;
+        max-height: unset;
+    }
+
+    .contentHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+
+    .contentTitle {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .contentActions {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}

@@ -15,8 +15,6 @@ export default function ProjectManagerWindow({ isOpen, onClose, projects, works,
                 <div className={styles.projectManagerGrid}>
                     <div className={styles.projectManagerActions}>
                         <button className={`${styles.btn} ${styles.btnSuccess}`} onClick={onAddNewProject}>➕ Создать проект</button>
-                        <button className={`${styles.btn} ${styles.btnWarning}`}>📥 Экспорт данных</button>
-                        <button className={`${styles.btn} ${styles.btnInfo}`}>📊 Создать отчет</button>
                     </div>
                     
                     <div className={styles.projectsList}>

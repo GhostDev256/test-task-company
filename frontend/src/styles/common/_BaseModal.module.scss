@@ -16,6 +16,51 @@
     display: flex;
 }
 
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btnSuccess {
+    background: #28a745;
+    color: white;
+}
+
+.btnPrimary {
+    background: #667eea;
+    color: white;
+}
+
+.btnDanger {
+    background: #dc3545;
+    color: white;
+}
+
+.btnWarning {
+    background: #ffc107;
+    color: #333;
+}
+
+.projectManagerGrid {
+    display: grid;
+    gap: 15px;
+    max-width: 600px;
+}
+
+.btnSmall {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
 .modalContent {
     background-color: white;
     padding: 30px;
@@ -86,4 +131,18 @@
 
 .close:hover {
     color: #333;
+}
+
+@media (max-width: 600px) {
+    .modalContent {
+        padding: 20px;
+    }
+
+    .modalTitle {
+        font-size: 18px;
+    }
+
+    .formGrid {
+        grid-template-columns: 1fr; /* Single column for forms on mobile */
+    }
 }

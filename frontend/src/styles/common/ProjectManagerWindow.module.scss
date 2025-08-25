@@ -22,3 +22,64 @@ small {
     gap: 10px; 
     margin-bottom: 20px;
 }
+
+.projectCard {
+    background: #f8f9fa; 
+    border: 1px solid #dee2e6; 
+    border-radius: 12px; 
+    padding: 20px; 
+    margin-bottom: 15px;
+}
+
+.projectCardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.projectCardActions {
+    display: flex;
+    gap: 8px;
+}
+
+.projectManagerActions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.projectCardStats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    text-align: center;
+}
+.statLabel {
+    font-size: 11px;
+    color: #6c757d;
+}
+
+.statItem {
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.statNumber {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #667eea;
+}
+
+
+@media (max-width: 600px) {
+    .formDiv {
+        max-width: 100%;
+    }
+
+    .formDiv div {
+        flex-direction: column; 
+        gap: 5px;
+    }
+}

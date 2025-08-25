@@ -8,7 +8,8 @@ export default defineConfig({
     base: '/',
     plugins: [react()],
     server: {
-        port: 443,
-        open: true,
-    },
+      host: true,
+      port: 417,
+      open: true,
+    }
 });
